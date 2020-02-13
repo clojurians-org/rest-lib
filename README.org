@@ -25,5 +25,6 @@
 * 备忘录
 #+BEGIN_SRC bash
   mvn -B archetype:generate -DgroupId=com.larluo -DartifactId=rest-lib-java -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeCatalog=local
-  mvn exec:java -Dexec.mainClass=larluo.Lib
+  export MAVEN_OPTS=-Dfile.encoding=UTF-8
+  mvn exec:java -Dexec.mainClass=com.larluo.App
 #+END_SRC
