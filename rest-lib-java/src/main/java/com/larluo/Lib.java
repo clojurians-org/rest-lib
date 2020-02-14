@@ -77,6 +77,7 @@ public class Lib {
         }
         return result ;
     }
+
     public static Map<String, String> stringmap (Object... xs) {
         int length = xs.length ;
         int offset =  0 ;
@@ -86,6 +87,11 @@ public class Lib {
           offset += 2 ;
         }
         return result ;
+    }
+    public static Map<String, String> stringmap (Map<String, Object> m) {
+        Map<String, String> ret = stringmap() ;
+        m.forEach( (k, v) -> ret.put(k, v.toString()) ) ;
+        return ret ;
     }
     public static String uuid() { return UUID.randomUUID().toString() ; }
     public static String uuidShort() { return uuid().replaceAll("-","") ; }
@@ -187,9 +193,10 @@ public class Lib {
         }) ;
         return element ;
     }
-    public static String jsonString(Object v) 
-    throws Exception {
-        return new ObjectMapper().writeValueAsString(v) ;
+    public static String jsonString(Object v) {
+        try {
+          return new ObjectMapper().writeValueAsString(v) ;
+        } catch (Exception e) { return null ; }
     }
     public static Document xml(List<Object> in) 
     throws Exception {
