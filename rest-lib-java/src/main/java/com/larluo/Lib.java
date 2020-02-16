@@ -67,15 +67,22 @@ public class Lib {
     public static enum HttpMethod {GET, POST} ;
     public static enum RSAMethod {PUBLIC,PRIVATE} ;
 
-    public static Map<String, Object> map(Object... xs) {
+    public static Map<String, Object> map(boolean keepNull, Object... xs) {
         int length = xs.length ;
         int offset =  0 ;
         Map<String, Object> result = new HashMap<String, Object>() ;
         while (offset < length) {
-          result.put(xs[offset].toString(), xs[offset+1]) ;
+          Object v = xs[offset+1] ;
+          if(v != null || keepNull) result.put(xs[offset].toString(), xs[offset+1]) ;
           offset += 2 ;
         }
         return result ;
+    }
+    public static Map<String, Object> map(Object... xs) {
+        return map(true, xs) ;
+    }
+    public static Map<String, Object> optmap(Object... xs) {
+        return map(false, xs) ;
     }
 
     public static Map<String, String> stringmap (Object... xs) {
@@ -92,6 +99,26 @@ public class Lib {
         Map<String, String> ret = stringmap() ;
         m.forEach( (k, v) -> ret.put(k, v.toString()) ) ;
         return ret ;
+    }
+    @SafeVarargs
+    public static Map<String, Object> maps(Map<String, Object>... xs) {
+        Map<String, Object> map = map() ;
+        for (Map<String, Object> m : xs) {
+            map.putAll(m) ;
+        }
+        return map ;
+    }
+    public static String trimGet(Map<String, String> m, String key) {
+        String v = m.get(key) ;
+        if (v == null) return null ;
+        if (v.trim().equals("")) return null ;
+        return v ;
+    }
+    public static String ensureGet(Map<String, String> m, String key) 
+    throws Exception {
+        String v = m.get(key) ;
+        if (v == null) throw new Exception("DATA IS MISSING FOR KEY: " + key) ;
+        return v ;
     }
     public static String uuid() { return UUID.randomUUID().toString() ; }
     public static String uuidShort() { return uuid().replaceAll("-","") ; }
@@ -126,6 +153,9 @@ public class Lib {
     }
     public static String md5(String in) {
         return md5Hex(in);
+    }
+    public static String upperMD5(String in) {
+        return md5(in).toUpperCase() ;
     }
 
     public static String sha256(String in) {
@@ -229,6 +259,9 @@ public class Lib {
         }
         return sb.toString() ;
     }
+    public static String md5Path(Object... xs) {
+        return md5(urlPath(Arrays.asList(xs))) ;
+    }
     public static String urlPath(Map<String, Object> params) {
         return params.entrySet().stream()
                       .map(e -> e.getKey()+"="+e.getValue().toString())
@@ -309,14 +342,16 @@ public class Lib {
     public static Object jsonGetter(Object json, String path) {
         return Arrays.stream(path.split("\\.")).reduce(json
         , (v, name) -> {
-            if (v instanceof Map) { return ((Map<Object, Object>) v).get(name) ; }
+            if (v != null && v instanceof Map) { return ((Map<Object, Object>) v).get(name) ; }
             return null ;
           }
         , (a,b) -> b
         ) ;
     }
     public static String jsonGetterString(Object json, String path) {
-        return jsonGetter(json, path).toString() ;
+        Object v = jsonGetter(json, path) ;
+        if (v == null) return null ;
+        return v.toString() ;
     }
     public static String xmlGetterString(Object xml, String path) 
     throws Exception {

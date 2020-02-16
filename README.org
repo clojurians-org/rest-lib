@@ -27,4 +27,5 @@
   mvn -B archetype:generate -DgroupId=com.larluo -DartifactId=rest-lib-java -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeCatalog=local
   export MAVEN_OPTS=-Dfile.encoding=UTF-8
   mvn exec:java -Dexec.mainClass=com.larluo.App
+  mvn exec:java -Dexec.mainClass=com.bumblebee.acquisition.fetch.hljk.HljkFetch
 #+END_SRC
