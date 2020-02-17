@@ -28,4 +28,6 @@
   export MAVEN_OPTS=-Dfile.encoding=UTF-8
   mvn exec:java -Dexec.mainClass=com.larluo.App
   mvn exec:java -Dexec.mainClass=com.bumblebee.acquisition.fetch.hljk.HljkFetch
+  mvn exec:java -Dexec.mainClass=com.bumblebee.acquisition.fetch.unionpaysmart.UnionPaySmartFetch
+  mvn exec:java -Dexec.mainClass=com.bumblebee.acquisition.fetch.chinaunioncom.ChinaUnioncomFetch
 #+END_SRC
