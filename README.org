@@ -29,5 +29,6 @@
   mvn exec:java -Dexec.mainClass=com.larluo.App
   mvn exec:java -Dexec.mainClass=com.bumblebee.acquisition.fetch.hljk.HljkFetch
   mvn exec:java -Dexec.mainClass=com.bumblebee.acquisition.fetch.unionpaysmart.UnionPaySmartFetch
-  mvn exec:java -Dexec.mainClass=com.bumblebee.acquisition.fetch.chinaunioncom.ChinaUnioncomFetch
+  mvn exec:java -Dexec.mainClass=com.bumblebee.acquisition.fetch.chinaunicom.ChinaUnicomFetch
+  mvn exec:java -Dexec.mainClass=com.bumblebee.acquisition.fetch.fahai.FahaiFetch
 #+END_SRC

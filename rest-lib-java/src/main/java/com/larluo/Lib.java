@@ -299,7 +299,7 @@ public class Lib {
     }
     public static InputStream http(HttpMethod method, String url, Map<String, Object> params, Map<String, String> header)
     throws Exception {
-        String urlFull = url + ((method == HttpMethod.GET) ? urlPath(params) : "");
+        String urlFull = url + ((method == HttpMethod.GET) ? "?" + urlPath(params) : "");
         InputStream in = (method == HttpMethod.POST) ? new ByteArrayInputStream(new ObjectMapper().writeValueAsBytes(params)) : null ;
         return http(method, urlFull, in, header) ;
     }
