@@ -44,9 +44,10 @@ public class HljkFetch implements Fetcher {
               , "key", md5Path("password", ensureGet(basedParams, "password"), "requestTime", nowLocal)
               )) ;
             
+    
+            Object apiJson = httpJSON(HttpMethod.POST, ensureGet(basedParams, "url"), params) ;
             ep.setValidFlg("T") ;
-            String apiJSON = jsonString(httpJSON(HttpMethod.POST, ensureGet(basedParams, "url"), params)) ;
-            return new Result(asList(ep), true, "请求成功", apiJSON) ;
+            return new Result(asList(ep), true, "请求成功", jsonString(apiJson)) ;
         } catch (Exception e) {
             ep.setValidFlg("F") ;
             e.printStackTrace() ;

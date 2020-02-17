@@ -152,6 +152,7 @@ public class Lib {
         return new String(Base64.getDecoder().decode(in)) ;
     }
     public static String md5(String in) {
+        if (in == null) return null ;
         return md5Hex(in);
     }
     public static String upperMD5(String in) {
@@ -360,6 +361,7 @@ public class Lib {
 
     public static String sm3(String in) 
     throws Exception {
+        if (in == null) return null ;
         return new String(Hex.encodeHex(hash(in.getBytes()), false)) ;
     }
     /************************************************
