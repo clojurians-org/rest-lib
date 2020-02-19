@@ -5,94 +5,122 @@ doc = "海联金科"
 
 [Provider.ChinaUnicom]
 doc = "中国联通风控接口"
-Token.doc = "获取token访问令牌"
-ThreeElementsSimple.doc = "三要素简版"
+    [Provider.ChinaUnicom.Token]
+    doc = "获取token访问令牌"
+        [Provider.ChinaUnicom.Token.Request.Local.Schema]
+        
+        [[Provider.ChinaUnicom.Token.Request.Remote.Schema]]
+        name = "username"
+        doc = "用户名"
+        type = "String"
+        length = 50
+        [[Provider.ChinaUnicom.Token.Request.Remote.Schema]]
+        name = "password"
+        doc = "密码"
+        type = "String"
+        length = 50
+        
+        [Provider.ChinaUnicom.Token.Response.Local.Schema]
+        [[Provider.ChinaUnicom.Token.Response.Remote.Schema]]
+        name = "code"
+        doc = """
+        接口响应状态码（针对整个请求）：
+        00：代表响应成功。其余代表失败。具体参考状态码对照表。"""
+        type = "String"
+        [[Provider.ChinaUnicom.Token.Response.Remote.Schema]]
+        name = "message"
+        doc = "状态码的描述（针对整个请求）。"
+        type = "String"
+        [[Provider.ChinaUnicom.Token.Response.Remote.Schema]]
+        name = "data"
+            [[Provider.ChinaUnicom.Token.Response.Remote.Schema.data]]
+            name = "token"
+            doc = "token令牌，访问接口时必须带上该值"
+            type = "String"
+        
+        [Provider.ChinaUnicom.Token.Client.Connect]
+        [Provider.ChinaUnicom.Token.Request.Connect]
+        [Provider.ChinaUnicom.Token.Rpc.Connect]
+        url = "https://140.206.76.195/bigdata/sh-credit/auth/apilogin"
+        method = "post"
+        [Provider.ChinaUnicom.Token.Response.Connect]
+    
 
-[Provider.ChinaUnicom.Token.Request.Local.Schema]
-[Provider.ChinaUnicom.Token.Request.Remote.Schema]
-username.doc = "用户名"
-username.type = "String"
-username.length = 50
-password.doc = "密码"
-password.type = "String"
-password.length = 50
-[Provider.ChinaUnicom.Token.Response.Local.Schema]
-[Provider.ChinaUnicom.Token.Response.Remote.Schema]
-code.doc = """
-接口响应状态码（针对整个请求）：
-00：代表响应成功。其余代表失败。具体参考状态码对照表。"""
-code.type = "String"
-message.doc = "状态码的描述（针对整个请求）。"
-message.type = "String"
-data.token.doc = "token令牌，访问接口时必须带上该值"
-data.token.type = "String"
-
-
-
-[Provider.ChinaUnicom.Token.Client.Connect]
-[Provider.ChinaUnicom.Token.Request.Connect]
-[Provider.ChinaUnicom.Token.Rpc.Connect]
-url = "https://140.206.76.195/bigdata/sh-credit/auth/apilogin"
-method = "post"
-[Provider.ChinaUnicom.Token.Response.Connect]
-
-[Provider.ChinaUnicom.ThreeElementsSimple.Request.Local.Schema]
-[Provider.ChinaUnicom.ThreeElementsSimple.Request.Remote.Schema]
-name.doc = "姓名"
-name.type = "String"
-name.length = 50
-mobile.doc = "手机号"
-mobile.type = "String"
-mobile.length = 50
-idCard.doc = "身份证号"
-idCard.type = "String"
-idCard.length = 50
-idType.doc = """
-证件类型（不填默认身份证）
-4位，例如：0101
-0101：公众证件—居民身份证
-0102：公众证件—户口簿
-0103：公众证件—军人身份证
-0104：公众证件—武装警察身份证
-0105：公众证件—港澳居民往来内地通行
-0106：公众证件—台湾居民往来大陆通行证
-0107：公众证件—护照
-0199：公众证件—其他个人证件
-0299：集团证件—非个人证件
-0999：未知(手机号码不存在或者本身非实名)"""
-idType.flag = ["Optional"]
-
-
-[Provider.ChinaUnicom.ThreeElementsSimple.Response.Local.Schema]
-[Provider.ChinaUnicom.ThreeElementsSimple.Response.Remote.Schema]
-code.doc = """
-接口响应状态码（针对整个请求）：
-00：代表响应成功。其余代表失败。具体参考状态码对照表。"""
-code.type = "String"
-code.length = 4
-message.doc = "状态码的描述（针对整个请求）。"
-message.type = "String"
-message.length = 200
-data.status.doc = """
-计费码
-1：成功
-2：失败
-"""
-data.status.type = "String"
-data.status.length = 1
-data.checkResult.doc = """
-1、手机号码、证件类型、证件号码、用户姓名一致
-2、手机号码、证件类型、证件号码、用户姓名不完全一致
-user canceled  电信号码已销号
-"""
-data.checkResult.type = "String"
-data.checkResult.length = 20
-
-[Provider.ChinaUnicom.ThreeElementsSimple.Client.Connect]
-[Provider.ChinaUnicom.ThreeElementsSimple.Request.Connect]
-[Provider.ChinaUnicom.ThreeElementsSimple.Rpc.Connect]
-[Provider.ChinaUnicom.ThreeElementsSimple.Response.Connect]
-
+    [Provider.ChinaUnicom.Token.ThreeElementsSimple]    
+    doc = "三要素简版"
+        [Provider.ChinaUnicom.ThreeElementsSimple.Request.Local.Schema]
+        [[Provider.ChinaUnicom.ThreeElementsSimple.Request.Remote.Schema]]
+        name = "name"
+        doc = "姓名"
+        type = "String"
+        length = 50
+        [[Provider.ChinaUnicom.ThreeElementsSimple.Request.Remote.Schema]]
+        name = "mobile"
+        doc = "手机号"
+        type = "String"
+        length = 50
+        [[Provider.ChinaUnicom.ThreeElementsSimple.Request.Remote.Schema]]
+        name = "idCard"
+        doc = "身份证号"
+        type = "String"
+        length = 50
+        [[Provider.ChinaUnicom.ThreeElementsSimple.Request.Remote.Schema]]
+        name = "idType"
+        doc = """
+        证件类型（不填默认身份证）
+        4位，例如：0101
+        0101：公众证件—居民身份证
+        0102：公众证件—户口簿
+        0103：公众证件—军人身份证
+        0104：公众证件—武装警察身份证
+        0105：公众证件—港澳居民往来内地通行
+        0106：公众证件—台湾居民往来大陆通行证
+        0107：公众证件—护照
+        0199：公众证件—其他个人证件
+        0299：集团证件—非个人证件
+        0999：未知(手机号码不存在或者本身非实名)"""
+        flag = ["Optional"]
+  
+  
+        [Provider.ChinaUnicom.ThreeElementsSimple.Response.Local.Schema]
+        [[Provider.ChinaUnicom.ThreeElementsSimple.Response.Remote.Schema]]
+        name = "code"
+        doc = """
+        接口响应状态码（针对整个请求）：
+        00：代表响应成功。其余代表失败。具体参考状态码对照表。"""
+        type = "String"
+        length = 4
+        [[Provider.ChinaUnicom.ThreeElementsSimple.Response.Remote.Schema]]
+        name = "message"
+        doc = "状态码的描述（针对整个请求）。"
+        type = "String"
+        length = 200
+        [[Provider.ChinaUnicom.ThreeElementsSimple.Response.Remote.Schema]]
+        name = "data"
+            [[Provider.ChinaUnicom.ThreeElementsSimple.Response.Remote.Schema.data]]
+            name = "status"
+            doc = """
+            计费码
+            1：成功
+            2：失败
+            """
+            type = "String"
+            length = 1
+            [[Provider.ChinaUnicom.ThreeElementsSimple.Response.Remote.Schema.data]]
+            name = "checkResult"
+            doc = """
+            1、手机号码、证件类型、证件号码、用户姓名一致
+            2、手机号码、证件类型、证件号码、用户姓名不完全一致
+            user canceled  电信号码已销号
+            """
+            type = "String"
+            length = 20
+        
+        [Provider.ChinaUnicom.ThreeElementsSimple.Client.Connect]
+        [Provider.ChinaUnicom.ThreeElementsSimple.Request.Connect]
+        [Provider.ChinaUnicom.ThreeElementsSimple.Rpc.Connect]
+        [Provider.ChinaUnicom.ThreeElementsSimple.Response.Connect]
+  
 [Provider.UnionPaySmart]
 doc = "银联智慧"
 

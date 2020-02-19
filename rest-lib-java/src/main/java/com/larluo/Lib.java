@@ -3,13 +3,11 @@ package com.larluo;
 import java.lang.reflect.Method ;
 import java.lang.reflect.Constructor ;
 import java.math.BigInteger ;
+import java.io.File ;
 import java.io.IOException ;
 import java.io.InputStream;
-import java.io.OutputStream ;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream ;
-import java.io.InputStreamReader;
-import java.io.BufferedReader;
+import java.io.FileInputStream ;
+import java.net.URL ;
 
 import java.util.Base64 ;
 import java.util.Arrays ;
@@ -18,18 +16,25 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 import java.util.UUID ;
+import java.util.function.Function;
 
 import java.nio.charset.StandardCharsets;
+import static java.nio.charset.StandardCharsets.* ;
 import java.net.URLEncoder ;
 
 import java.time.LocalDateTime ;
 import java.time.format.DateTimeFormatter ;
 
+import org.apache.commons.io.IOUtils ;
+import static org.apache.commons.io.IOUtils.* ;
+import org.apache.commons.io.output.ByteArrayOutputStream ;
 import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
 import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
 import org.apache.commons.codec.binary.Hex ;
 
+import com.moandjiezana.toml.Toml ;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 import org.apache.http.protocol.HttpContext ;
 import org.apache.http.client.HttpClient; 
@@ -38,7 +43,6 @@ import org.apache.http.impl.client.CloseableHttpClient ;
 import org.apache.http.HttpResponse ;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.fluent.Response ;
-
 
 import org.apache.http.ssl.SSLContexts ;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory ;
@@ -64,8 +68,98 @@ import java.security.spec.X509EncodedKeySpec ;
 import java.security.spec.PKCS8EncodedKeySpec ;
 
 public class Lib {
+    public static class Resource {
+        public URL v ;
+        public Resource(URL v) { this.v = v; }
+    }
+    public static class Json {
+        public Object v ;
+        public Json(Object v) { this.v = v ;}
+    }
+    public static class Xml {
+        public Document v ;
+        public Xml(Document v) { this.v = v; }
+    }
     public static enum HttpMethod {GET, POST} ;
     public static enum RSAMethod {PUBLIC,PRIVATE} ;
+
+    public static Resource resource(String in) throws IOException {
+        return new Resource(Lib.class.getClassLoader().getResource(in)) ;
+    }
+    public static InputStream inputStream(File in) throws IOException {
+        return new FileInputStream(in) ;
+    }
+    public static InputStream inputStream(String in) throws Exception {
+        return inputStream(new File(in)) ;
+    }
+    public static InputStream inputStream(Resource in) throws Exception {
+        return in.v.openStream() ;
+    }
+    public static InputStream inputStream(Json json) throws Exception {
+        ByteArrayOutputStream out = new ByteArrayOutputStream() ;
+        new ObjectMapper().writeValue(out, json.v) ;
+        return out.toInputStream() ;
+    }
+    public static InputStream inputStream(Xml xml) throws Exception {
+        ByteArrayOutputStream bout = new ByteArrayOutputStream() ;
+        Transformer tf = TransformerFactory.newInstance().newTransformer() ;
+        tf.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        tf.transform(new DOMSource(xml.v), new StreamResult(bout)) ;
+        return bout.toInputStream() ;
+    }
+    public static String string(InputStream in) throws Exception { return IOUtils.toString(in, UTF_8) ; }
+    public static String string(Json json)  {
+        try { 
+            return IOUtils.toString(inputStream(json), UTF_8) ;
+        } catch (Exception e) { return null ; }
+    }
+
+    public static Json json(Object v) { return new Json(v); }
+    public static Json json(InputStream in) {
+        try {
+          return new Json(new ObjectMapper().readValue(in, Object.class)) ;
+        } catch (Exception e) { return null ; }
+    }
+    public static Json json(String s) { return json(toInputStream(s, UTF_8)) ; }
+
+    @SuppressWarnings("unchecked")
+    private static Element _xmlElement(Document d, List<Object> in) {
+        if (in.size() != 3) return null ;
+        String name = (String)in.get(0) ;
+        Map<String,String> attrs = (Map<String,String>)in.get(1) ;
+        List<Object> childrens = (List<Object>)in.get(2) ;
+        Element element = d.createElement(name) ;
+        attrs.entrySet().stream().forEach (e -> {
+          Attr attr = d.createAttribute(e.getKey()) ;
+          attr.setValue(e.getValue()) ;
+          element.setAttributeNode(attr) ;
+        }) ;
+        childrens.stream().forEach (x -> {
+          Element eChild = _xmlElement(d, (List<Object>)x) ;
+          element.appendChild(eChild) ;
+        }) ;
+        return element ;
+    }
+
+    public static Xml xml(InputStream in) 
+    throws Exception {
+        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder() ;
+        return new Xml(db.parse(in)) ;
+    }
+    public static Xml xml(List<Object> in) 
+    throws Exception {
+        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder() ;
+        Document d = db.newDocument() ;
+        d.appendChild(_xmlElement(d, in)) ;
+        return new Xml(d) ;
+    }
+
+    public static Toml toml(InputStream in) {
+        return new Toml().read(in) ;
+    }
+    public static Toml toml(Resource res) throws Exception {
+        return toml(inputStream(res)) ;
+    }
 
     public static Map<String, Object> map(boolean keepNull, Object... xs) {
         int length = xs.length ;
@@ -122,16 +216,15 @@ public class Lib {
     }
     public static String uuid() { return UUID.randomUUID().toString() ; }
     public static String uuidShort() { return uuid().replaceAll("-","") ; }
-    public static long now() { return System.currentTimeMillis() ; }
-    public static String nowString() { return Long.toString(now()) ; }
+    public static long nowVal() { return System.currentTimeMillis() ; }
+    public static String now() { return Long.toString(nowVal()) ; }
+    @Deprecated
+    public static String nowString() { return now(); }
     public static String nowLocal() {
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) ;
     }
     public static String nowUTC() {
         return "" ;
-    }
-    public static String slurp(InputStream in) {
-        return new BufferedReader(new InputStreamReader(in)).lines().collect(Collectors.joining("\n")) ;
     }
 
     public static String urlEncode(String in) 
@@ -176,16 +269,17 @@ public class Lib {
         cipher.init(Cipher.ENCRYPT_MODE, rsaKey(method, publicKey)) ;
 
         byte[] inBytes = in.getBytes() ;
-        ByteArrayOutputStream out = new ByteArrayOutputStream() ;
-        int length = inBytes.length ;
-        int offset = 0 ;
-        while (offset < length) {
-          int actualBlockSize = (length - offset > blockSize) ? blockSize : length - offset ;
-          out.write(cipher.doFinal(inBytes, offset, actualBlockSize)) ;
-          offset += actualBlockSize ;
+        try(ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+          int length = inBytes.length ;
+          int offset = 0 ;
+          while (offset < length) {
+            int actualBlockSize = (length - offset > blockSize) ? blockSize : length - offset ;
+            out.write(cipher.doFinal(inBytes, offset, actualBlockSize)) ;
+            offset += actualBlockSize ;
+          }
+          out.flush() ;
+          return new String(base64Bin(out.toByteArray())) ;
         }
-        out.flush() ;
-        return new String(base64Bin(out.toByteArray())) ;
     }
 
     public static String rsaDecrypt(RSAMethod method, String privateKey, int blockSize, String in) 
@@ -194,61 +288,22 @@ public class Lib {
         cipher.init(Cipher.DECRYPT_MODE, rsaKey(method, privateKey)) ;
 
         byte[] inBytes = unbase64Bin(in.getBytes()) ;
-        ByteArrayOutputStream out = new ByteArrayOutputStream() ;
-        int length = inBytes.length ;
-        int offset = 0 ;
-        while (offset < length) {
-          int actualBlockSize = (length - offset > blockSize) ? blockSize : length - offset ;
-          out.write(cipher.doFinal(inBytes, offset, actualBlockSize)) ;
-          offset += actualBlockSize ;
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+          int length = inBytes.length ;
+          int offset = 0 ;
+          while (offset < length) {
+            int actualBlockSize = (length - offset > blockSize) ? blockSize : length - offset ;
+            out.write(cipher.doFinal(inBytes, offset, actualBlockSize)) ;
+            offset += actualBlockSize ;
+          }
+          out.flush() ;
+          return new String(out.toByteArray()) ;
         }
-        out.flush() ;
-        return new String(out.toByteArray()) ;
     }
 
-    @SuppressWarnings("unchecked")
-    public static Element xmlElement(Document d, List<Object> in) {
-        if (in.size() != 3) return null ;
-        String name = (String)in.get(0) ;
-        Map<String,String> attrs = (Map<String,String>)in.get(1) ;
-        List<Object> childrens = (List<Object>)in.get(2) ;
-        Element element = d.createElement(name) ;
-        attrs.entrySet().stream().forEach (e -> {
-          Attr attr = d.createAttribute(e.getKey()) ;
-          attr.setValue(e.getValue()) ;
-          element.setAttributeNode(attr) ;
-        }) ;
-        childrens.stream().forEach (x -> {
-          Element eChild = xmlElement(d, (List<Object>)x) ;
-          element.appendChild(eChild) ;
-        }) ;
-        return element ;
-    }
-    public static String jsonString(Object v) {
-        try {
-          return new ObjectMapper().writeValueAsString(v) ;
-        } catch (Exception e) { return null ; }
-    }
-    public static Document xml(List<Object> in) 
-    throws Exception {
-        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder() ;
-        Document d = db.newDocument() ;
-        d.appendChild(xmlElement(d, in)) ;
-        return d ;
-    }
-    public static Document xml(InputStream in) 
-    throws Exception {
-        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder() ;
-        return db.parse(in) ;
-    }
-    public static InputStream inputStream(Document in) 
-    throws Exception {
-        ByteArrayOutputStream bout = new ByteArrayOutputStream() ;
-        Transformer tf = TransformerFactory.newInstance().newTransformer() ;
-        tf.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-        tf.transform(new DOMSource(in), new StreamResult(bout)) ;
-        return new ByteArrayInputStream(bout.toByteArray()) ;
-    }
+    @Deprecated
+    public static String jsonString(Object v) { return string(json(v)) ; }
+
     public static String urlPath(List<Object> xs) {
         int length = xs.size() ;
         int offset = 0 ;
@@ -300,7 +355,7 @@ public class Lib {
     public static InputStream http(HttpMethod method, String url, Map<String, Object> params, Map<String, String> header)
     throws Exception {
         String urlFull = url + ((method == HttpMethod.GET) ? "?" + urlPath(params) : "");
-        InputStream in = (method == HttpMethod.POST) ? new ByteArrayInputStream(new ObjectMapper().writeValueAsBytes(params)) : null ;
+        InputStream in = (method == HttpMethod.POST) ? inputStream(json(params)) : null ;
         return http(method, urlFull, in, header) ;
     }
 
@@ -321,8 +376,7 @@ public class Lib {
     }
     public static Object httpXML(HttpMethod method,String url, List<Object> params) 
     throws Exception {
-        Document d = xml(params) ;
-        // return slurp(http(method, url, inputStream(d))) ;
+        Xml d = xml(params) ;
         return xml(http(method, url, inputStream(d))) ;
     }
     public static Object httpJSONEmpty(HttpMethod method, String url, Map<String, String> header)
@@ -332,7 +386,7 @@ public class Lib {
     
     public static String httpString(HttpMethod method, String url, Map<String, Object> params, Map<String, String> header) 
     throws Exception {
-        return slurp(http(method, url, params, header)) ;
+        return string(http(method, url, params, header)) ;
     }
     public static String httpString(HttpMethod method, String url, Map<String, Object> params) 
     throws Exception {
@@ -364,6 +418,7 @@ public class Lib {
         if (in == null) return null ;
         return new String(Hex.encodeHex(hash(in.getBytes()), false)) ;
     }
+
     /************************************************
      * INNER FUNCTION, PLEASE SKIP
      ************************************************/
@@ -417,16 +472,17 @@ public class Lib {
         if (k < 0) {
             k = k + 512;
         }
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        baos.write(source);
-        baos.write(FirstPadding);
-        long i = k - 7;
-        while (i > 0) {
-            baos.write(ZeroPadding);
-            i -= 8;
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+          baos.write(source);
+          baos.write(FirstPadding);
+          long i = k - 7;
+          while (i > 0) {
+              baos.write(ZeroPadding);
+              i -= 8;
+          }
+          baos.write(long2bytes(l));
+          return baos.toByteArray();
         }
-        baos.write(long2bytes(l));
-        return baos.toByteArray();
     }
 
     private static byte[] long2bytes(long l) {
@@ -504,16 +560,17 @@ public class Lib {
 
     private static byte[] toByteArray(int a, int b, int c, int d, int e, int f,
                                       int g, int h) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream(32);
-        baos.write(toByteArray(a));
-        baos.write(toByteArray(b));
-        baos.write(toByteArray(c));
-        baos.write(toByteArray(d));
-        baos.write(toByteArray(e));
-        baos.write(toByteArray(f));
-        baos.write(toByteArray(g));
-        baos.write(toByteArray(h));
-        return baos.toByteArray();
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream(32)) {
+          baos.write(toByteArray(a));
+          baos.write(toByteArray(b));
+          baos.write(toByteArray(c));
+          baos.write(toByteArray(d));
+          baos.write(toByteArray(e));
+          baos.write(toByteArray(f));
+          baos.write(toByteArray(g));
+          baos.write(toByteArray(h));
+          return baos.toByteArray();
+        }
     }
 
     private static byte[] toByteArray(int i) {
@@ -535,14 +592,13 @@ public class Lib {
         }
     }
 
-
     /********** MAIN FUNCTION *************/
     public static void main(String[] args) throws Exception {
         // System.out.println(nowLocal()) ;
         // System.out.println(base64("larluo"));
-        // System.out.println(base64("larluo")) ;
         // System.out.println(md5("larluo"));
         // System.out.println(sha256("larluo"));
-        System.out.println(sm3("6222088750761350_898440691390031_20921200")) ;
+        // System.out.println(sm3("6222088750761350_898440691390031_20921200")) ;
+        System.out.println(toml(resource("metadata.toml"))) ;
     }
 }
