@@ -80,6 +80,7 @@ public class Lib {
         public Document v ;
         public Xml(Document v) { this.v = v; }
     }
+
     public static enum HttpMethod {GET, POST} ;
     public static enum RSAMethod {PUBLIC,PRIVATE} ;
 
@@ -161,6 +162,9 @@ public class Lib {
         return toml(inputStream(res)) ;
     }
 
+    public static Map<String, Object> map(Toml toml) {
+        return toml.toMap() ;
+    }
     public static Map<String, Object> map(boolean keepNull, Object... xs) {
         int length = xs.length ;
         int offset =  0 ;
@@ -599,6 +603,9 @@ public class Lib {
         // System.out.println(md5("larluo"));
         // System.out.println(sha256("larluo"));
         // System.out.println(sm3("6222088750761350_898440691390031_20921200")) ;
-        System.out.println(toml(resource("metadata.toml"))) ;
+        System.out.println(string(json(map(toml(resource("metadata.toml")))))) ;
+
+
+
     }
 }

@@ -12,7 +12,7 @@
 ** 功能列表
 1. HASH函数 [MD5, SHA256, SM3]
 #+BEGIN_SRC bash
-  nix-env -f ~/.nix-defexpr/channels/nixos-19.09 -iA coreutils
+  nix-env -f ~/.nix-defexpr/channels/nixos-19.09 -iA coreutils jq
   echo -ne "larluo" | md5sum | awk '{print $1}' #=> 78dbae4188d22f8a2f308e8d18c88733
   echo -ne "larluo" | sha256sum | awk '{print $1}' #=> f30008639b78094c71423eca84e81e9aa5cfb5c7993ae956ae20f66b6b0add50
 #+END_SRC
@@ -26,6 +26,7 @@
 #+BEGIN_SRC bash
   mvn -B archetype:generate -DgroupId=com.larluo -DartifactId=rest-lib-java -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeCatalog=local
   export MAVEN_OPTS=-Dfile.encoding=UTF-8
+  mvn exec:java -Dexec.mainClass=com.larluo.Lib  | grep -v INFO  | jq
   mvn exec:java -Dexec.mainClass=com.larluo.App
   mvn exec:java -Dexec.mainClass=com.bumblebee.acquisition.fetch.hljk.HljkFetch
   mvn exec:java -Dexec.mainClass=com.bumblebee.acquisition.fetch.unionpaysmart.UnionPaySmartFetch
