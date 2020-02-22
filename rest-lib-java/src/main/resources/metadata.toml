@@ -1,16 +1,123 @@
 doc = "外部数据字典"
 
 [Api]
-hljk_open = "Provider.Hljk.OpenTag"
-chinaunicom_3ElementsSimple = "Provider.ChinaUnicom.ThreeElementsSimple"
-chinaunicom_3Elements = "Provider.ChinaUnicom.ThreeElements"
-unionpaysmart_index_personal = "Provider.UnionPaySmart.IndexPersonal"
-unionpaysmart_index_merchant = "Provider.UnionPaySmart.IndexMerchant"
-unionpaysmart_score_super = "Provider.UnionPaySmart.ScoreSuper"
+slpg_GetConstruction = ["世联评估", "获取楼盘列表", "Provider.WorldUnion.GetConstruction"]
+sjpg_EstateEvaluation= ["世联评估", "综合估价", "Provider.WorldUnion.EstateEvaluation"] #
+hx_getcreditinfoAv3 = ["海鑫", "人员数据服务", "Provider.Hisign.GetCreditInfo"]
+hljk_open = ["海联金科", "指数查询接口", "Provider.Hljk.OpenTag"]
+huifa_fxxxjqcx = ["汇法", "风险信息精确查询", "Provider.Huifa.ExactQuery"]
+huifa_fxxxjqgl = ["汇法", "风险信息精确关联", "Provider.Huifa.ExactRelevance"]
+huifa_fxxxtjcx = ["汇法", "风险信息统计查询", "Provider.Huifa.StatQuery"]
+fico_GetScore = ["FICO", "评分", "Provider.Fico.GetScore"]
+unionpaysmart_index_personal = ["银联智慧", "卡级消费画像指标", "Provider.UnionPaySmart.IndexPersonal"]
+unionpaysmart_index_merchant = ["银联智慧", "经营画像指标", "Provider.UnionPaySmart.IndexMerchant"]
+unionpaysmart_score_super = ["银联智慧", "风险评估报告", "Provider.UnionPaySmart.ScoreSuper"]
+chinaunicom_3ElementsSimple = ["中国联通", "简版三要素", "Provider.ChinaUnicom.ThreeElementsSimple"]
+chinaunicom_3Elements = ["中国联通", "三要素", "Provider.ChinaUnicom.ThreeElements"]
+chinaunicom_TelOnlineTime = ["中国联通", "在网时长", "Provider.ChinaUnicom.TelOnlineTime"]
+chinaunicom_TelStatus = ["中国联通", "在网状态", "Provider.ChinaUnicom.TelStatus"]
+fahai_query_sifa = ["法海", "涉诉企业查询", "Provider.Fahai.QuerySifa"]
+fahai_personal_sifa = ["法海", "涉诉个人查询", "Provider.Fahai.PersonalSifa"]
+fahai_query_sat = ["法海", "涉税企业查询", "Provider.Fahai.QuerySat"]
+fahai_export_sifa = ["法海", "涉诉详情查询", "Provider.Fahai.ExportSifa"]
+fahai_export_sat = ["法海", "涉税详情查询", "Provider.Fahai.ExportSat"]
+
+[Provider.WorldUnion]
+    [[Provider.WorldUnion.Env.Schema]]
+    doc = "请求地址"
+    name = "url"
+    [[Provider.WorldUnion.Env.Schema]]
+    doc = "用户名"
+    name = "UserName"
+    [[Provider.WorldUnion.Env.Schema]]
+    doc = "密码"
+    name = "Password"
+
+
+    [Provider.WorldUnion.Env.Params]
+    doc = "公用环境参数"
+        [Provider.WorldUnion.Env.Params.DEV]
+        doc = "开发环境参数"
+        url = "http://test.worldunion.cn:8620"
+        UserName = "Shrbank_TestUser"
+        Password = "Shrbank_TestPwd"
+        [Provider.WorldUnion.Env.Params.PROD]
+        doc = "生产环境参数"
+        url = "http://io.worldunion.cn:8620"
+        UserName = "[TODO]"
+        Password = "[TODO]"
+
+
+[Provider.Hisign]
+    [[Provider.Hisign.Env.Schema]]
+    doc = "请求地址"
+    name = "url"
+    [[Provider.Hisign.Env.Schema]]
+    doc = "用户名"
+    name = "useraccount"
+    [[Provider.Hisign.Env.Schema]]
+    doc = "密码"
+    name = "userpwd"
+
+
+    [Provider.Hisgn.Env.Params]
+    doc = "公用环境参数 [通过账户号区分]"
+    url = "https://103.192.212.170:8443"
+        [Provider.Hisign.Env.Params.DEV]
+        doc = "开发环境参数"
+        useraccount = "SHHR_Test"
+        userpwd = "#qpr8Vgw"
+        [Provider.Hisign.Env.Params.PROD]
+        doc = "生产环境参数"
+        useraccount = "SHHR"
+        userpwd = "P9#m6&kG"
+
+[Provider.Huifa]
+    [[Provider.Huifa.Env.Schema]]
+    doc = "请求地址"
+    name = "url"
+    [[Provider.Huifa.Env.Schema]]
+    doc = "app密钥"
+    name = "appKey"
+
+    
+    [Provider.Huifa.Params]
+    doc = "公用环境参数"
+        [Provider.Huifa.Params.DEV]
+        doc = "开发环境参数"
+        url = "http://testapi.lawxp.com"
+        appKey = "c9bfbe9f59730ed9"
+        [Provider.Huifa.Params.PROD]
+        doc = "生产环境参数"
+        url = "https://ss1.lawxp.com/s.aspx"
+        appKey = "[TODO]"
+
+[Provider.FICO]    
+    [[Provider.FICO.Env.Schema]]
+    doc = "请求地址"
+    name = "url"
+    [[Provider.FICO.Env.Schema]]
+    doc = "客户编号"
+    name = "clientID"
+    [[Provider.FICO.Env.Schema]]
+    doc = "密码"
+    name = "password"
+
+    [Provider.FICO.Params]
+    doc = "公用环境参数"
+        [Provider.FICO.Params.DEV]
+        doc = "开发环境参数"
+        url = "https://123.206.4.118:8000"
+        clientID = "gmm-test"
+        password = "TEST"
+        [Provider.FICO.Params.PROD]
+        doc = "生产环境参数"
+        url = "https://123.206.4.118:8000/BigDataScore/GetScore"
+        clientID = ""
+        password = ""
 
 
 [Provider.Hljk]
-doc = "海联金科"
     [[Provider.Hljk.Env.Schema]]
     doc = "请求地址"
     name = "url"
@@ -26,19 +133,18 @@ doc = "海联金科"
 
 
     [Provider.Hljk.Env.Params]
-    doc = "公用环境参数"
-    more = "通过账户号区分环境"
+    doc = "公用环境参数[通过账户号区分环境]"
     url = "http://103.235.224.183"
-    [Provider.Hljk.Env.Params.DEV]
-    doc = "开发环境参数"
-    pubKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDBc5wi9MBleCKMu+KPDN6lwG9YOMAC2LlIAL/OaEelzLBiF+klwdsMRkQyrBvhw9w6aS0qbw24Y2HGMYJiGuZbTLFCD/3YZuyDqDDbziO9aM09PvLuu+C3r4VvGAToY3CSb4RDnHO4X7pf+v6b9qDtKxA2WPRJxp4ldUZ1u+S/VQIDAQAB"
-    channel = "RpVi1580970pV133068"
-    password = "dbeW1580970be133069"
-    [Provider.Hljk.Env.Params.PROD]
-    doc = "生产环境参数"
-    pubKey = "[TODO]"
-    channel = "[TODO]"
-    password = "[TODO]"
+        [Provider.Hljk.Env.Params.DEV]
+        doc = "开发环境参数"
+        pubKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDBc5wi9MBleCKMu+KPDN6lwG9YOMAC2LlIAL/OaEelzLBiF+klwdsMRkQyrBvhw9w6aS0qbw24Y2HGMYJiGuZbTLFCD/3YZuyDqDDbziO9aM09PvLuu+C3r4VvGAToY3CSb4RDnHO4X7pf+v6b9qDtKxA2WPRJxp4ldUZ1u+S/VQIDAQAB"
+        channel = "RpVi1580970pV133068"
+        password = "dbeW1580970be133069"
+        [Provider.Hljk.Env.Params.PROD]
+        doc = "生产环境参数"
+        pubKey = "[TODO]"
+        channel = "[TODO]"
+        password = "[TODO]"
 
 
     [Provider.Hljk.OpenTag]
@@ -48,47 +154,40 @@ doc = "海联金科"
         doc = "请求数据加密串"
         name = "data"
         encode = "rsa"
-          [[Provider.Hljk.OpenTag.Request.Remote.Schema.data]]
-          doc = "加密手机号"
-          name = "encryptMobile"
-          more = ""
-          [[Provider.Hljk.OpenTag.Request.Remote.Schema.data]]
-          doc = "加密身份证号"
-          name = "idcard"  
-          more = ""
-          [[Provider.Hljk.OpenTag.Request.Remote.Schema.data]]
-          doc = "加密姓名"
-          more = ""
+            [[Provider.Hljk.OpenTag.Request.Remote.Schema.data]]
+            doc = "加密手机号"
+            name = "encryptMobile"
+            more = ""
+            [[Provider.Hljk.OpenTag.Request.Remote.Schema.data]]
+            doc = "加密身份证号"
+            name = "idcard"  
+            more = ""
+            [[Provider.Hljk.OpenTag.Request.Remote.Schema.data]]
+            doc = "加密姓名"
+            more = ""
           
 
 [Provider.ChinaUnicom]
-doc = "中国联通风控接口"
-    [Provider.ChinaUnicom.Env]
-    doc = "通过账户号区分环境"
+    [[Provider.ChinaUnicom.Env.Schema]]
+    doc = "请求地址"
+    name = "url"
+    [[Provider.ChinaUnicom.Env.DEV.Schema]]
+    doc = "用户名"
+    name = "username"
+    [[Provider.ChinaUnicom.Env.DEV.Schema]]
+    doc = "密码"
+    name = "password"
+
+
+    [Provider.ChinaUnicom.Env.Params]
+    doc = "公用环境参数[通过账户号区分环境]"
     url = "https://140.206.76.195"
-
-    [Provider.ChinaUnicom.Env.DEV]
-    doc = "开发环境"
-    [[Provider.ChinaUnicom.Env.DEV.Schema]]
-    doc = "用户名"
-    name = "username"
-    value = "huaruibank"
-    [[Provider.ChinaUnicom.Env.DEV.Schema]]
-    doc = "密码"
-    name = "password"
-    value = "hrb@1q2w3e"
-
-
-    [Provider.ChinaUnicom.Env.PROD]
-    doc = "生产环境"
-    [[Provider.ChinaUnicom.Env.PROD.Schema]]
-    doc = "用户名"
-    name = "username"
-    value = "[TODO]"
-    [[Provider.ChinaUnicom.Env.PROD.Schema]]
-    doc = "密码"
-    name = "password"
-    value = "[TODO]"
+    [Provider.ChinaUnicom.Env.Params.DEV]
+    username = "huaruibank"
+    password = "hrb@1q2w3e"    
+    [Provider.ChinaUnicom.Env.Params.PROD]
+    username = "[TODO]"
+    password = "[TODO]"
 
 
     [Provider.ChinaUnicom.Token]
@@ -216,51 +315,45 @@ doc = "中国联通风控接口"
   
 [Provider.UnionPaySmart]
 doc = "银联智慧"
-    [Provider.UnionPaySmart.Env]
-    doc = "通过请求地址与账号区分环境"
     [[Provider.UnionPaySmart.Env.Schema]]
     doc = "华瑞银行私钥"
     name = "myPrivate"
-    value = "pCyPoC6yN4jtpSFcPDrGS0OsAs3t2c1azl74llLpU3iX7qmYrY3uYsoFraEp1wM1EOh5RHJbUhGzEyv/FQKBgGx/j6QQaceTZKzY+YIzAnhVGaPAuvjA3Vf8exv8K1xyD/cKy0SyPS5aUF9u1B4dKjOtIXWnvKZ5M01jfY6D81ua40WfGlvM3PnKwAWOMcXmgS7BFgOCS2NVcUZy+i3QPmuBXiuLOx8Ae0uJsm2o6px7ocnfZVJ5LmurIzF2G0VBAoGAcDsZ4Tn2v+UHOGe+tsSxy0v468dQNLK+jKNXHc3CwDE9w2Bt5f1aUSQNjG+29yfu1+GIaKcuJmMC9wQvFchH3/iJaUQCII1QUpnL5VpU2+29j2UjCXU3QcghVeDUChdTwThiFO9ZYTr6xdWnUaifuNK70P7JqEO3qxJn6hojYukCgYBDcuHySdGbiyV6j0QipACqd1Sxl6/L57m/DuHNAaPQ7YF7QArwKq1Eg7tFZmky6a/22NTlJ9mPz6gRESz8Xv01xfIed+2cHdBnCVOep0ANOjhZAKjleqhR/U67hezJHWm322fVbIeFJSHBJOztWtRsRiGBm/GZI2/KeTRPtdF9Uw=="
     [[Provider.UnionPaySmart.Env.Schema]]
     doc = "华瑞银行公钥"
     name = "myPublic"
-    value = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmunbml2D+Sn6E9HBdqGynVLOc5AgHwTZ7dbjV877gUCUAnaZn41tENXJNG1YjiRO/v+Zy4Z9XDIJjqR/VvdwtZ6kCibBT9Vi/xoig2QyC5ba1LsgCKXNFycXsjUrfRAEmrAvwwdPw1wRwZfGL/AqLocvHr1pkOp8qlfWsBcrDsp50WK7x03L/nKR4h16Fv3l4jAxBbUIs2+jWeV1nyGkbR3aK/HUh3wZIjrS8LxFCYFL6qW00DkwzAJnOFjGEVmvobpUdVbxMb4dX80/4KCOAGAX9+ryL0DHzZsYIB571WGOWKjb+MVXOu7KYKyRubCgf+0LeXu5OteTI8OWpurNUwIDAQAB"
-
-
-    [Provider.UnionPaySmart.Env.DEV]
-    doc = "开发环境"
-    [[Provider.UnionPaySmart.Env.DEV.Schema]]
+    [[Provider.UnionPaySmart.Env.Schema]]
     doc = "请求地址"
     name = "url"
-    value = "https://warcraft-test.unionpaysmart.com/"
-    [[Provider.UnionPaySmart.Env.DEV.Schema]]
+    [[Provider.UnionPaySmart.Env.Schema]]
     doc = "账号"
     name = "account"
-    value = "T3010011"
 
 
-    [Provider.UnionPaySmart.Env.PROD]
-    doc = "生产环境"
-    [[Provider.UnionPaySmart.Env.PROD.Schema]]
-    doc = "请求地址"
-    name = "url"
-    value = "https://smarteye.unionpaysmart.com/"
-    [[Provider.UnionPaySmart.Env.PROD.Schema]]
-    doc = "账号"
-    name = "account"
-    value = "F3010011"
+    [Provider.UnionPaySmart.Env.Params]
+    doc = "公用环境参数[通过请求地址与账号区分环境]"
+    myPrivate = "pCyPoC6yN4jtpSFcPDrGS0OsAs3t2c1azl74llLpU3iX7qmYrY3uYsoFraEp1wM1EOh5RHJbUhGzEyv/FQKBgGx/j6QQaceTZKzY+YIzAnhVGaPAuvjA3Vf8exv8K1xyD/cKy0SyPS5aUF9u1B4dKjOtIXWnvKZ5M01jfY6D81ua40WfGlvM3PnKwAWOMcXmgS7BFgOCS2NVcUZy+i3QPmuBXiuLOx8Ae0uJsm2o6px7ocnfZVJ5LmurIzF2G0VBAoGAcDsZ4Tn2v+UHOGe+tsSxy0v468dQNLK+jKNXHc3CwDE9w2Bt5f1aUSQNjG+29yfu1+GIaKcuJmMC9wQvFchH3/iJaUQCII1QUpnL5VpU2+29j2UjCXU3QcghVeDUChdTwThiFO9ZYTr6xdWnUaifuNK70P7JqEO3qxJn6hojYukCgYBDcuHySdGbiyV6j0QipACqd1Sxl6/L57m/DuHNAaPQ7YF7QArwKq1Eg7tFZmky6a/22NTlJ9mPz6gRESz8Xv01xfIed+2cHdBnCVOep0ANOjhZAKjleqhR/U67hezJHWm322fVbIeFJSHBJOztWtRsRiGBm/GZI2/KeTRPtdF9Uw=="
+    myPublic = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmunbml2D+Sn6E9HBdqGynVLOc5AgHwTZ7dbjV877gUCUAnaZn41tENXJNG1YjiRO/v+Zy4Z9XDIJjqR/VvdwtZ6kCibBT9Vi/xoig2QyC5ba1LsgCKXNFycXsjUrfRAEmrAvwwdPw1wRwZfGL/AqLocvHr1pkOp8qlfWsBcrDsp50WK7x03L/nKR4h16Fv3l4jAxBbUIs2+jWeV1nyGkbR3aK/HUh3wZIjrS8LxFCYFL6qW00DkwzAJnOFjGEVmvobpUdVbxMb4dX80/4KCOAGAX9+ryL0DHzZsYIB571WGOWKjb+MVXOu7KYKyRubCgf+0LeXu5OteTI8OWpurNUwIDAQAB"
+    [Provider.UnionPaySmart.Env.Params.DEV]
+    doc = "开发环境参数"
+    url = "https://warcraft-test.unionpaysmart.com/"
+    account = "T3010011"
+    [Provider.UnionPaySmart.Env.Params.PROD]
+    doc = "生产环境参数"
+    url = "https://smarteye.unionpaysmart.com/"
+    account = "F3010011"
 
 
 [Provider.Fahai]
 doc = "法海风控"
-    [Provider.Fahai.Env]
-    doc = "生产环境和测试环境一致"
     [[Provider.Fhai.Env.Schema]]
     doc = "服务地址"
     name = "url"
-    value = "https://api.fahaicc.com"
     [[Provider.Fhai.Env.Schema]]
     doc = "授权码"
     name = "authCode"
-    value = "uLbde9xmFDj3SeejyHu3"
+
+
+    [Provider.Fahai.Env.Params]
+    doc = "公用环境参数[生产环境和测试环境一致]"
+    url = "https://api.fahaicc.com"
+    authCode = "uLbde9xmFDj3SeejyHu3"

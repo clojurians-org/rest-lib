@@ -116,6 +116,7 @@ public class Lib {
     }
 
     public static Json json(Object v) { return new Json(v); }
+    public static Json json(Toml toml) { return new Json(toml.toMap()) ;}
     public static Json json(InputStream in) {
         try {
           return new Json(new ObjectMapper().readValue(in, Object.class)) ;
@@ -604,8 +605,6 @@ public class Lib {
         // System.out.println(sha256("larluo"));
         // System.out.println(sm3("6222088750761350_898440691390031_20921200")) ;
         System.out.println(string(json(map(toml(resource("metadata.toml")))))) ;
-
-
 
     }
 }
