@@ -9,6 +9,7 @@
 plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
+    id "application"
     id 'dev.clojurephant.clojure' version '0.5.0'
 }
 
@@ -39,4 +40,12 @@ dependencies {
     devImplementation 'cider:cider-nrepl:0.24.0'
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
+}
+
+clojureRepl {
+  handler = 'cider.nrepl/cider-nrepl-handler'
+}
+
+application {
+    mainClassName = "com.larluo.Lib"
 }
