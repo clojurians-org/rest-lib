@@ -2,13 +2,13 @@ doc = "外部数据字典"
 
 [Api]
 slpg_GetConstruction = ["世联评估", "获取楼盘列表", "Provider.WorldUnion.GetConstruction"]
-sjpg_EstateEvaluation= ["世联评估", "综合估价", "Provider.WorldUnion.EstateEvaluation"] #
+sjpg_EstateEvaluation= ["世联评估", "综合估价", "Provider.WorldUnion.EstateEvaluation"]
 hx_getcreditinfoAv3 = ["海鑫", "人员数据服务", "Provider.Hisign.GetCreditInfo"]
-hljk_open = ["海联金科", "指数查询接口", "Provider.Hljk.OpenTag"]
 huifa_fxxxjqcx = ["汇法", "风险信息精确查询", "Provider.Huifa.ExactQuery"]
 huifa_fxxxjqgl = ["汇法", "风险信息精确关联", "Provider.Huifa.ExactRelevance"]
 huifa_fxxxtjcx = ["汇法", "风险信息统计查询", "Provider.Huifa.StatQuery"]
 fico_GetScore = ["FICO", "评分", "Provider.Fico.GetScore"]
+hljk_open = ["海联金科", "指数查询接口", "Provider.Hljk.OpenTag"]
 unionpaysmart_index_personal = ["银联智慧", "卡级消费画像指标", "Provider.UnionPaySmart.IndexPersonal"]
 unionpaysmart_index_merchant = ["银联智慧", "经营画像指标", "Provider.UnionPaySmart.IndexMerchant"]
 unionpaysmart_score_super = ["银联智慧", "风险评估报告", "Provider.UnionPaySmart.ScoreSuper"]
@@ -22,7 +22,9 @@ fahai_query_sat = ["法海", "涉税企业查询", "Provider.Fahai.QuerySat"]
 fahai_export_sifa = ["法海", "涉诉详情查询", "Provider.Fahai.ExportSifa"]
 fahai_export_sat = ["法海", "涉税详情查询", "Provider.Fahai.ExportSat"]
 
-[Provider.WorldUnion]
+
+# 世联评估
+[Provider.WorldUnion.Env]
     [[Provider.WorldUnion.Env.Schema]]
     doc = "请求地址"
     name = "url"
@@ -48,7 +50,7 @@ fahai_export_sat = ["法海", "涉税详情查询", "Provider.Fahai.ExportSat"]
         Password = "[TODO]"
 
 
-[Provider.Hisign]
+[Provider.Hisign.Env]
     [[Provider.Hisign.Env.Schema]]
     doc = "请求地址"
     name = "url"
@@ -72,7 +74,7 @@ fahai_export_sat = ["法海", "涉税详情查询", "Provider.Fahai.ExportSat"]
         useraccount = "SHHR"
         userpwd = "P9#m6&kG"
 
-[Provider.Huifa]
+[Provider.Huifa.Env]
     [[Provider.Huifa.Env.Schema]]
     doc = "请求地址"
     name = "url"
@@ -92,7 +94,7 @@ fahai_export_sat = ["法海", "涉税详情查询", "Provider.Fahai.ExportSat"]
         url = "https://ss1.lawxp.com/s.aspx"
         appKey = "[TODO]"
 
-[Provider.FICO]    
+[Provider.FICO.Env]
     [[Provider.FICO.Env.Schema]]
     doc = "请求地址"
     name = "url"
@@ -117,7 +119,7 @@ fahai_export_sat = ["法海", "涉税详情查询", "Provider.Fahai.ExportSat"]
         password = ""
 
 
-[Provider.Hljk]
+[Provider.Hljk.Env]
     [[Provider.Hljk.Env.Schema]]
     doc = "请求地址"
     name = "url"
@@ -147,27 +149,7 @@ fahai_export_sat = ["法海", "涉税详情查询", "Provider.Fahai.ExportSat"]
         password = "[TODO]"
 
 
-    [Provider.Hljk.OpenTag]
-    doc = "指数查询接口"
-        [[Provider.Hljk.OpenTag.Request.Local.Schema]]
-        [[Provider.Hljk.OpenTag.Request.Remote.Schema]]
-        doc = "请求数据加密串"
-        name = "data"
-        encode = "rsa"
-            [[Provider.Hljk.OpenTag.Request.Remote.Schema.data]]
-            doc = "加密手机号"
-            name = "encryptMobile"
-            more = ""
-            [[Provider.Hljk.OpenTag.Request.Remote.Schema.data]]
-            doc = "加密身份证号"
-            name = "idcard"  
-            more = ""
-            [[Provider.Hljk.OpenTag.Request.Remote.Schema.data]]
-            doc = "加密姓名"
-            more = ""
-          
-
-[Provider.ChinaUnicom]
+[Provider.ChinaUnicom.Env]
     [[Provider.ChinaUnicom.Env.Schema]]
     doc = "请求地址"
     name = "url"
@@ -189,6 +171,106 @@ fahai_export_sat = ["法海", "涉税详情查询", "Provider.Fahai.ExportSat"]
     username = "[TODO]"
     password = "[TODO]"
 
+  
+[Provider.UnionPaySmart.Env]
+    [[Provider.UnionPaySmart.Env.Schema]]
+    doc = "华瑞银行私钥"
+    name = "myPrivate"
+    [[Provider.UnionPaySmart.Env.Schema]]
+    doc = "华瑞银行公钥"
+    name = "myPublic"
+    [[Provider.UnionPaySmart.Env.Schema]]
+    doc = "请求地址"
+    name = "url"
+    [[Provider.UnionPaySmart.Env.Schema]]
+    doc = "账号"
+    name = "account"
+
+
+    [Provider.UnionPaySmart.Env.Params]
+    doc = "公用环境参数[通过请求地址与账号区分环境]"
+    [Provider.UnionPaySmart.Env.Params.DEV]
+    doc = "开发环境参数"
+    url = "https://warcraft-test.unionpaysmart.com/"
+    account = "T3010011"
+    myPrivate = "pCyPoC6yN4jtpSFcPDrGS0OsAs3t2c1azl74llLpU3iX7qmYrY3uYsoFraEp1wM1EOh5RHJbUhGzEyv/FQKBgGx/j6QQaceTZKzY+YIzAnhVGaPAuvjA3Vf8exv8K1xyD/cKy0SyPS5aUF9u1B4dKjOtIXWnvKZ5M01jfY6D81ua40WfGlvM3PnKwAWOMcXmgS7BFgOCS2NVcUZy+i3QPmuBXiuLOx8Ae0uJsm2o6px7ocnfZVJ5LmurIzF2G0VBAoGAcDsZ4Tn2v+UHOGe+tsSxy0v468dQNLK+jKNXHc3CwDE9w2Bt5f1aUSQNjG+29yfu1+GIaKcuJmMC9wQvFchH3/iJaUQCII1QUpnL5VpU2+29j2UjCXU3QcghVeDUChdTwThiFO9ZYTr6xdWnUaifuNK70P7JqEO3qxJn6hojYukCgYBDcuHySdGbiyV6j0QipACqd1Sxl6/L57m/DuHNAaPQ7YF7QArwKq1Eg7tFZmky6a/22NTlJ9mPz6gRESz8Xv01xfIed+2cHdBnCVOep0ANOjhZAKjleqhR/U67hezJHWm322fVbIeFJSHBJOztWtRsRiGBm/GZI2/KeTRPtdF9Uw=="
+    myPublic = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmunbml2D+Sn6E9HBdqGynVLOc5AgHwTZ7dbjV877gUCUAnaZn41tENXJNG1YjiRO/v+Zy4Z9XDIJjqR/VvdwtZ6kCibBT9Vi/xoig2QyC5ba1LsgCKXNFycXsjUrfRAEmrAvwwdPw1wRwZfGL/AqLocvHr1pkOp8qlfWsBcrDsp50WK7x03L/nKR4h16Fv3l4jAxBbUIs2+jWeV1nyGkbR3aK/HUh3wZIjrS8LxFCYFL6qW00DkwzAJnOFjGEVmvobpUdVbxMb4dX80/4KCOAGAX9+ryL0DHzZsYIB571WGOWKjb+MVXOu7KYKyRubCgf+0LeXu5OteTI8OWpurNUwIDAQAB"
+    [Provider.UnionPaySmart.Env.Params.PROD]
+    doc = "生产环境参数"
+    url = "https://smarteye.unionpaysmart.com/"
+    account = "F3010011"
+    myPrivate = "[TODO]"
+    myPublic = "[TODO]"
+
+
+
+[Provider.Fahai.Env]
+    [[Provider.Fahai.Env.Schema]]
+    doc = "服务地址"
+    name = "url"
+    [[Provider.Fahai.Env.Schema]]
+    doc = "授权码"
+    name = "authCode"
+    [Provider.Fahai.Env.Params]
+    doc = "公用环境参数[生产环境和测试环境一致]"
+    url = "https://api.fahaicc.com"
+    authCode = "uLbde9xmFDj3SeejyHu3"
+
+
+
+[Provider.Hljk.OpenTag.Schema]
+        [[Provider.Hljk.OpenTag.RPC.Request.Schema]]
+        doc = "请求数据加密串"
+        name = "data"
+        encode = "rsa"
+            [[Provider.Hljk.OpenTag.RPC.Request.Schema.data]]
+            doc = "手机号"
+            name = "encryptMobile"
+            encrypt = true
+            more = ""
+            [[Provider.Hljk.OpenTag.RPC.Request.Schema.data]]
+            doc = "身份证号"
+            name = "idcard"  
+            encrypt = true
+            more = ""
+            [[Provider.Hljk.OpenTag.RPC.Request.Schema.data]]
+            doc = "姓名"
+            name = "name"
+            encrypt = true
+            more = ""
+
+        [[Provider.Hljk.OpenTag.RPC.Response.Schema]]
+        doc = "响应码"
+        name = "code"
+        more = "返回 0000 代表成功，其他代表失败，具体错误码参考附录"
+        [[Provider.Hljk.OpenTag.RPC.Response.Schema]]
+        doc = "响应信息"
+        name = "info"
+        [[Provider.Hljk.OpenTag.RPC.Response.Schema]]
+        doc = "响应内容"
+        name = "data"
+        
+
+    [Provider.Hljk.OpenTag.Input]
+        [[Provider.Hljk.OpenTag.Request.Local.Schema]]
+        doc = "手机号"
+        name = "mobile"
+        for = "encryptMobile"
+        [[Provider.Hljk.OpenTag.Request.Local.Schema]]
+        doc = "身份证号"
+        name = "idcard"
+        [[Provider.Hljk.OpenTag.Request.Local.Schema]]
+        doc = "姓名"
+        name = "name"
+        [[Provider.Hljk.OpenTag.Request.Local.Schema]]
+        doc = "套餐编码"
+        name = "setmealCode"
+        [[Provider.Hljk.OpenTag.Request.Local.Schema]]
+        doc = "标签字段组成的字符串"
+        name = "tags"
+        [[Provider.Hljk.OpenTag.Request.Local.Schema]]
+        doc = "回溯月"
+        name = "recallMonth"
 
     [Provider.ChinaUnicom.Token]
     doc = "获取token访问令牌"
@@ -222,9 +304,7 @@ fahai_export_sat = ["法海", "涉税详情查询", "Provider.Fahai.ExportSat"]
         method = "post"
     
 
-    [Provider.ChinaUnicom.ThreeElementsSimple]    
-    doc = "三要素简版"
-    dependencies = ["Provider.ChinaUnicom.Token"]
+    [Provider.ChinaUnicom.ThreeElementsSimple.RPC.Request]    
         [[Provider.ChinaUnicom.ThreeElementsSimple.Request.Local.Schema]]
         name = "authUrl"
         doc = "验证地址"
@@ -271,89 +351,1483 @@ fahai_export_sat = ["法海", "涉税详情查询", "Provider.Fahai.ExportSat"]
         optional = true
 
   
-        [Provider.ChinaUnicom.ThreeElementsSimple.Response.Local.Schema]
-
-
-        [[Provider.ChinaUnicom.ThreeElementsSimple.Response.Remote.Schema]]
+    [Provider.ChinaUnicom.ThreeElementsSimple.RPC.Response]
+        [[Provider.ChinaUnicom.ThreeElementsSimple.RPC.Response.Schema]]
         name = "code"
         doc = """\
              接口响应状态码（针对整个请求）：\n\
              00：代表响应成功。其余代表失败。具体参考状态码对照表。\n\
         """
         length = 4
-        [[Provider.ChinaUnicom.ThreeElementsSimple.Response.Remote.Schema]]
+        [[Provider.ChinaUnicom.ThreeElementsSimple.RPC.Response.Schema]]
         name = "message"
-        doc = "状态码的描述（针对整个请求）。"
+        doc = "状态码描述（针对整个请求）。"
         length = 200
-        [[Provider.ChinaUnicom.ThreeElementsSimple.Response.Remote.Schema]]
+        [[Provider.ChinaUnicom.ThreeElementsSimple.RPC.Response.Schema]]
         name = "data"
-            [[Provider.ChinaUnicom.ThreeElementsSimple.Response.Remote.Schema.data]]
+            [[Provider.ChinaUnicom.ThreeElementsSimple.RPC.Response.Schema.data]]
+            doc = "计费码"
             name = "status"
-            doc = """\
-                计费码\n\
+            more = """\
                 1：成功\n\
                 2：失败\n\
             """
             length = 1
-            [[Provider.ChinaUnicom.ThreeElementsSimple.Response.Remote.Schema.data]]
+            [[Provider.ChinaUnicom.ThreeElementsSimple.RPC.Response.Schema.data]]
+            doc = "状态码"
             name = "checkResult"
-            doc = """\
+            more = """\
                 1、手机号码、证件类型、证件号码、用户姓名一致\n\
                 2、手机号码、证件类型、证件号码、用户姓名不完全一致\n\
                 user canceled  电信号码已销号\n\
             """
             length = 20
-        [Provider.ChinaUnicom.ThreeElementsSimple.Rpc]
+
+    [Provider.ChinaUnicom.ThreeElementsSimple.Input]
+        [[Provider.ChinaUnicom.ThreeElementsSimple.Input.Schema]]
+        doc = "用户名"
+        name = "name"
+        type = "string"
+        [[Provider.ChinaUnicom.ThreeElementsSimple.Input.Schema]]
+        doc = "手机号"
+        name = "mobile"
+        type = "string"
+        [[Provider.ChinaUnicom.ThreeElementsSimple.Input.Schema]]
+        doc = "证件号"
+        name = "idCard"
+        type = "string"
+        [[Provider.ChinaUnicom.ThreeElementsSimple.Input.Schema]]
+        doc = "证件类型"
+        name = "idType"
+        type = "string?"
+    
+
+    [Provider.ChinaUnicom.ThreeElements.Input]
+        [[Provider.ChinaUnicom.ThreeElements.Input.Schema]]
+        doc = "用户名"
+        name = "name"
+        type = "string"
+        [[Provider.ChinaUnicom.ThreeElements.Input.Schema]]
+        doc = "手机号"
+        name = "mobile"
+        type = "string"
+        [[Provider.ChinaUnicom.ThreeElements.Input.Schema]]
+        doc = "证件号"
+        name = "idCard"
+        type = "string"
 
 
-        [Provider.ChinaUnicom.ThreeElementsSimple.Request.Connect]
+    [Provider.ChinaUnicom.TelOnlineTime.RPC.Response]
+        [[Provider.ChinaUnicom.TelOnlineTime.RPC.Response.Schema]]
+        doc = "接口响应状态"
+        name = "code"
+        [[Provider.ChinaUnicom.TelOnlineTime.RPC.Response.Schema]]
+        doc = "状态码描述"
+        name = "message"
+        [[Provider.ChinaUnicom.TelOnlineTime.RPC.Response.Schema]]
+        name = "data"
+            [[Provider.ChinaUnicom.TelOnlineTime.RPC.Response.Schema.data]]
+            doc = "状态码"
+            name = "checkResult"
+    [Provider.ChinaUnicom.TelOnlineTime.Input]
+        [[Provider.ChinaUnicom.TelOnlineTime.Input.Schema]]
+        doc = "手机号"
+        name = "mobile"
+        type = "string"
 
 
-        [Provider.ChinaUnicom.ThreeElementsSimple.Response.Connect]
-
-    [Provider.ChinaUnicom.ThreeElements]
-  
-[Provider.UnionPaySmart]
-doc = "银联智慧"
-    [[Provider.UnionPaySmart.Env.Schema]]
-    doc = "华瑞银行私钥"
-    name = "myPrivate"
-    [[Provider.UnionPaySmart.Env.Schema]]
-    doc = "华瑞银行公钥"
-    name = "myPublic"
-    [[Provider.UnionPaySmart.Env.Schema]]
-    doc = "请求地址"
-    name = "url"
-    [[Provider.UnionPaySmart.Env.Schema]]
-    doc = "账号"
-    name = "account"
-
-
-    [Provider.UnionPaySmart.Env.Params]
-    doc = "公用环境参数[通过请求地址与账号区分环境]"
-    myPrivate = "pCyPoC6yN4jtpSFcPDrGS0OsAs3t2c1azl74llLpU3iX7qmYrY3uYsoFraEp1wM1EOh5RHJbUhGzEyv/FQKBgGx/j6QQaceTZKzY+YIzAnhVGaPAuvjA3Vf8exv8K1xyD/cKy0SyPS5aUF9u1B4dKjOtIXWnvKZ5M01jfY6D81ua40WfGlvM3PnKwAWOMcXmgS7BFgOCS2NVcUZy+i3QPmuBXiuLOx8Ae0uJsm2o6px7ocnfZVJ5LmurIzF2G0VBAoGAcDsZ4Tn2v+UHOGe+tsSxy0v468dQNLK+jKNXHc3CwDE9w2Bt5f1aUSQNjG+29yfu1+GIaKcuJmMC9wQvFchH3/iJaUQCII1QUpnL5VpU2+29j2UjCXU3QcghVeDUChdTwThiFO9ZYTr6xdWnUaifuNK70P7JqEO3qxJn6hojYukCgYBDcuHySdGbiyV6j0QipACqd1Sxl6/L57m/DuHNAaPQ7YF7QArwKq1Eg7tFZmky6a/22NTlJ9mPz6gRESz8Xv01xfIed+2cHdBnCVOep0ANOjhZAKjleqhR/U67hezJHWm322fVbIeFJSHBJOztWtRsRiGBm/GZI2/KeTRPtdF9Uw=="
-    myPublic = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmunbml2D+Sn6E9HBdqGynVLOc5AgHwTZ7dbjV877gUCUAnaZn41tENXJNG1YjiRO/v+Zy4Z9XDIJjqR/VvdwtZ6kCibBT9Vi/xoig2QyC5ba1LsgCKXNFycXsjUrfRAEmrAvwwdPw1wRwZfGL/AqLocvHr1pkOp8qlfWsBcrDsp50WK7x03L/nKR4h16Fv3l4jAxBbUIs2+jWeV1nyGkbR3aK/HUh3wZIjrS8LxFCYFL6qW00DkwzAJnOFjGEVmvobpUdVbxMb4dX80/4KCOAGAX9+ryL0DHzZsYIB571WGOWKjb+MVXOu7KYKyRubCgf+0LeXu5OteTI8OWpurNUwIDAQAB"
-    [Provider.UnionPaySmart.Env.Params.DEV]
-    doc = "开发环境参数"
-    url = "https://warcraft-test.unionpaysmart.com/"
-    account = "T3010011"
-    [Provider.UnionPaySmart.Env.Params.PROD]
-    doc = "生产环境参数"
-    url = "https://smarteye.unionpaysmart.com/"
-    account = "F3010011"
+    [Provider.ChinaUnicom.TelStatus.RPC.Response]
+        [[Provider.ChinaUnicom.TelStatus.RPC.Response.Schema]]
+        doc = "接口响应状态"
+        name = "code"
+        [[Provider.ChinaUnicom.TelStatus.RPC.Response.Schema]]
+        doc = "状态码描述"
+        name = "message"
+        [[Provider.ChinaUnicom.TelStatus.RPC.Response.Schema]]
+        name = "data"
+            [[Provider.ChinaUnicom.TelStatus.RPC.Response.Schema.data]]
+            doc = "状态码"
+            name = "checkResult"
+    [Provider.ChinaUnicom.TelStatus.Input]
+        [[Provider.ChinaUnicom.TelStatus.Input.Schema]]
+        doc = "手机号"
+        name = "mobile"
+        type = "string"
 
 
-[Provider.Fahai]
-doc = "法海风控"
-    [[Provider.Fhai.Env.Schema]]
-    doc = "服务地址"
-    name = "url"
-    [[Provider.Fhai.Env.Schema]]
-    doc = "授权码"
-    name = "authCode"
+    [Provider.UnionPaySmart.IndexPersonal.RPC.Request]
+        [[Provider.UnionPaySmart.IndexPersonal.RPC.Request.Schema]]
+        doc = "卡号"
+        name = "card"
+        encrypt = "SM3"
+    [Provider.UnionPaySmart.IndexPersonal.RPC.Response]
+        [[Provider.UnionPaySmart.IndexPersonal.RPC.Response.Schema]]
+        doc = "响应码"
+        name = "code"
+        [[Provider.UnionPaySmart.IndexPersonal.RPC.Response.Schema]]
+        doc = "响应码描述"
+        name = "message"
+        [[Provider.UnionPaySmart.IndexPersonal.RPC.Response.Schema]]
+        doc = "状态码"
+        name = "status"
+        [[Provider.UnionPaySmart.IndexPersonal.RPC.Response.Schema]]
+        doc = "接入方流水号"
+        name = "orderId"
+        [[Provider.UnionPaySmart.IndexPersonal.RPC.Response.Schema]]
+        doc = "智惠流水号"
+        name = "smartId"
+        [[Provider.UnionPaySmart.IndexPersonal.RPC.Response.Schema]]
+        doc = "响应数据验签"
+        name = "sign"
+        [[Provider.UnionPaySmart.IndexPersonal.RPC.Response.Schema]]
+        doc = "指标数据结果"
+        name = "data"
 
 
-    [Provider.Fahai.Env.Params]
-    doc = "公用环境参数[生产环境和测试环境一致]"
-    url = "https://api.fahaicc.com"
-    authCode = "uLbde9xmFDj3SeejyHu3"
+    [Provider.UnionPaySmart.IndexPersonal.Input]
+        [[Provider.UnionPaySmart.IndexPersonal.Input.Schema]]
+        doc = "卡号"
+        name = "card"
+        [[Provider.UnionPaySmart.IndexPersonal.Input.Schema]]
+        doc = "name"
+        name = "持卡人姓名"
+        optional = true
+        [[Provider.UnionPaySmart.IndexPersonal.Input.Schema]]
+        doc = "查询的字段编号"
+        name = "indicies"
+        optional = true
+        [[Provider.UnionPaySmart.IndexPersonal.Input.Schema]]
+        doc = "证件类型"
+        name = "identityType"
+        optional = true
+        [[Provider.UnionPaySmart.IndexPersonal.Input.Schema]]
+        doc = "证件号"
+        name = "identityCard"
+        optional = true
+        [[Provider.UnionPaySmart.IndexPersonal.Input.Schema]]
+        doc = "移动电话"
+        name = "mobile"
+        [[Provider.UnionPaySmart.IndexPersonal.Input.Schema]]
+        doc = "电子邮箱"
+        name = "email"
+        [[Provider.UnionPaySmart.IndexPersonal.Input.Schema]]
+        doc = "地址"
+        name = "address"
+
+
+    [Provider.UnionPaySmart.IndexMerchant.RPC.Response]
+        [[Provider.UnionPaySmart.IndexMerchant.RPC.Response.Schema]]
+        doc = "响应码"
+        name = "code"
+        [[Provider.UnionPaySmart.IndexMerchant.RPC.Response.Schema]]
+        doc = "响应码描述"
+        name = "message"
+        [[Provider.UnionPaySmart.IndexMerchant.RPC.Response.Schema]]
+        doc = "状态码"
+        name = "status"
+        [[Provider.UnionPaySmart.IndexMerchant.RPC.Response.Schema]]
+        doc = "接入方流水号"
+        name = "orderId"
+        [[Provider.UnionPaySmart.IndexMerchant.RPC.Response.Schema]]
+        doc = "智惠流水号"
+        name = "smartId"
+        [[Provider.UnionPaySmart.IndexMerchant.RPC.Response.Schema]]
+        doc = "响应数据验签"
+        name = "sign"
+        [[Provider.UnionPaySmart.IndexMerchant.RPC.Response.Schema]]
+        doc = "指标数据结果"
+        name = "data"
+
+
+    [Provider.UnionPaySmart.IndexMerchant.Input]
+        [[Provider.UnionPaySmart.IndexMerchant.Input.Schema]]
+        doc = "mid"
+        name = "mid"
+        type = "string"
+        [[Provider.UnionPaySmart.IndexMerchant.Input.Schema]]
+        doc = "pid"
+        name = "pid"
+        type = "string?"
+        [[Provider.UnionPaySmart.IndexMerchant.Input.Schema]]
+        doc = "查询的字段编号"
+        name = "indices"
+        type = "string?"
+        [[Provider.UnionPaySmart.IndexMerchant.Input.Schema]]
+        doc = "商户名称"
+        name = "mname"
+        type = "string?"
+        [[Provider.UnionPaySmart.IndexMerchant.Input.Schema]]
+        doc = "营业执照注册号"
+        name = "regNo"
+        type = "string?"
+        [[Provider.UnionPaySmart.IndexMerchant.Input.Schema]]
+        doc = "负责人姓名"
+        name = "legalName"
+        type = "string?"
+
+
+    [Provider.UnionPaySmart.ScoreSuper.RPC.Response]
+        [[Provider.UnionPaySmart.ScoreSuper.RPC.Response.Schema]]
+        doc = "响应码"
+        name = "code"
+        [[Provider.UnionPaySmart.ScoreSuper.RPC.Response.Schema]]
+        doc = "响应码描述"
+        name = "message"
+        [[Provider.UnionPaySmart.ScoreSuper.RPC.Response.Schema]]
+        doc = "状态码"
+        name = "status"
+        [[Provider.UnionPaySmart.ScoreSuper.RPC.Response.Schema]]
+        doc = "接入方流水号"
+        name = "orderId"
+        [[Provider.UnionPaySmart.ScoreSuper.RPC.Response.Schema]]
+        doc = "智惠流水号"
+        name = "smartId"
+        [[Provider.UnionPaySmart.ScoreSuper.RPC.Response.Schema]]
+        doc = "响应数据验签"
+        name = "sign"
+        [[Provider.UnionPaySmart.ScoreSuper.RPC.Response.Schema]]
+        doc = "指标数据结果"
+        name = "data"
+
+
+    [Provider.UnionPaySmart.ScoreSuper.Input]
+        [[Provider.UnionPaySmart.ScoreSuper.Input.Schema]]
+        doc = "持卡人姓名"
+        name = "name"
+        type = "string"
+        [[Provider.UnionPaySmart.ScoreSuper.Input.Schema]]
+        doc = "身份证号"
+        name = "cid"
+        type = "string"
+        [[Provider.UnionPaySmart.ScoreSuper.Input.Schema]]
+        doc = "银行卡卡号"
+        name = "card"
+        type = "string?"
+        [[Provider.UnionPaySmart.ScoreSuper.Input.Schema]]
+        doc = "移动电话"
+        name = "mobile"
+        type = "string?"
+        [[Provider.UnionPaySmart.ScoreSuper.Input.Schema]]
+        doc = "地址"
+        name = "address"
+        type = "string?"
+
+[Provider.Fahai.Schema]
+        [[Provider.Fahai.Common.RPC.Response.Schema]]
+        doc = "返回码"
+        name = "code"
+        more = "s-成功, e-错误"
+        [[Provider.Fahai.Common.RPC.Response.Schema]]
+        doc = "返回码描述"
+        name = "msg"
+        [[Provider.Fahai.Common.RPC.Response.Schema]]
+        doc = "检索时间（秒）"
+        name = "searchSeconds"
+        [[Provider.Fahai.Common.RPC.Response.Schema]]
+        doc = "所有信息数量"
+        name = "totalCount"
+        [[Provider.Fahai.Common.RPC.Response.Schema]]
+        doc = "所有信息总页码数"
+        name = "totalPageNum"
+        [[Provider.Fahai.Common.RPC.Response.Schema]]
+        doc = "当前页码数"
+        name = "pageNo"
+        [[Provider.Fahai.Common.RPC.Response.Schema]]
+        doc = "每页数量"
+        name = "range"
+        [[Provider.Fahai.Common.RPC.Response.Schema]]
+        name = "allList"
+                [[Provider.Fahai.Common.RPC.Response.Schema.allList]]
+                doc = "标识"
+                name = "entryId"
+                [[Provider.Fahai.Common.RPC.Response.Schema.allList]]
+                doc = "内容概要"
+                name = "body"
+                [[Provider.Fahai.Common.RPC.Response.Schema.allList]]
+                doc = "标题"
+                name = "title"
+                [[Provider.Fahai.Common.RPC.Response.Schema.allList]]
+                doc = "时间"
+                name = "sortTime"
+                [[Provider.Fahai.Common.RPC.Response.Schema.allList]]
+                doc = "时间字符串"
+                name = "sortTimeString"
+                [[Provider.Fahai.Common.RPC.Response.Schema.allList]]
+                doc = "数据类型"
+                name = "dataType"
+                [[Provider.Fahai.Common.RPC.Response.Schema.allList]]
+                doc = "匹配度"
+                name = "matchRatio"
+        # 裁判文书
+        [[Provider.Fahai.Common.RPC.Response.Schema]]
+        doc = "裁判文书信息数量"
+        name = "cpwsCount"
+        [[Provider.Fahai.Common.RPC.Response.Schema]]
+        doc = "裁判文书信息总页码数"
+        name = "cpwsPageNum"
+        # 开庭公告
+        [[Provider.Fahai.Common.Response.Schema]]
+        doc = "开庭公告信息数量"
+        name = "ktggCount"
+        [[Provider.Fahai.Common.Response.Schema]]
+        doc = "开庭公告信息总页码数"
+        name = "ktggPageNum"
+        # 执行公告
+        [[Provider.Fahai.Common.Response.Schema]]
+        doc = "执行公告信息数量"
+        name = "zxggCount"
+        [[Provider.Fahai.Common.Response.Schema]]
+        doc = "执行公告总页码数"
+        name = "zxggPageNum"
+        # 失信公告
+        [[Provider.Fahai.Common.Response.Schema]]
+        doc = "失信公告信息数量"
+        name = "shixinCount"
+        [[Provider.Fahai.Common.Response.Schema]]
+        doc = "失信公告总页码数"
+        name = "shixinPageNum"
+        # 法院公告
+        [[Provider.Fahai.Common.Response.Schema]]
+        doc = "法院公告信息数量"
+        name = "fyggCount"
+        [[Provider.Fahai.Common.Response.Schema]]
+        doc = "法院公告总页码数"
+        name = "fyggPageNum"
+        # 案件流程信息
+        [[Provider.Fahai.Common.Response.Schema]]
+        doc = "案件流程信息数量"
+        name = "ajlcCount"
+        [[Provider.Fahai.Common.Response.Schema]]
+        doc = "案件流程总页码数"
+        name = "ajlcPageNum"
+        # 曝光台
+        [[Provider.Fahai.Common.Response.Schema]]
+        doc = "曝光台信息数量"
+        name = "bgtCount"
+        [[Provider.Fahai.Common.Response.Schema]]
+        doc = "曝光台总页码数"
+        name = "bgtPageNum"
+        # 司法查冻扣
+        [[Provider.Fahai.Common.Response.Schema]]
+        doc = "司法查冻扣数据数量"
+        name = "sifacdkCount"
+        [[Provider.Fahai.Common.Response.Schema]]
+        doc = "司法查冻扣数据总页码数"
+        name = "sifacdkPageNum"
+        # 拍卖公告
+        [[Provider.Fahai.Response.Schema]]
+        doc = "拍卖公告数据数量"
+        name = "pmggCount"
+        [[Provider.Fahai.Response.Schema]]
+        doc = "拍卖公告数据总页码数"
+        name = "pmggPageNum"
+        # 欠税公告数据
+        [[Provider.Fahai.Response.Schema]]
+        doc = "欠税公告信息数量"
+        name = "satparty_qsCount"
+        [[Provider.Fahai.Response.Schema]]
+        doc = "欠税公告信息总页码数"
+        name = "satparty_qsPageNum"
+        # 涉税处罚公示数据
+        [[Provider.Fahai.Response.Schema]]
+        doc = "涉税处罚信息数量"
+        name = "satparty_chufaCount"
+        [[Provider.Fahai.Response.Schema]]
+        doc = "涉税处罚信息总页码数"
+        name = "satparty_chufaPageNum"
+        # 税务非正常户公示数据
+        [[Provider.Fahai.Response.Schema]]
+        doc = "涉税非正常户信息数量"
+        name = "satparty_fzcCount"
+        [[Provider.Fahai.Response.Schema]]
+        doc = "涉税非正常户总页码数"
+        name = "satparty_fzcPageNum"
+        # 纳税信用等级数据
+        [[Provider.Fahai.Response.Schema]]
+        doc = "涉税信用等级信息数量"
+        name = "satparty_xinCount"
+        [[Provider.Fahai.Response.Schema]]
+        doc = "涉税信用等级总页码数"
+        name = "satparty_xinPageNum"
+
+        [[Provider.Fahai.Response.Schema]]
+        doc = "裁判文书详情"
+        name = "cpws"
+            [[Provider.Fahai.Response.Schema.cpws]]
+            doc = "裁判文书ID"
+            name = "cpwsId"
+            [[Provider.Fahai.Response.Schema.cpws]]
+            doc = "内容"
+            name = "body"
+            [[Provider.Fahai.Response.Schema.cpws]]
+            doc = "案号"
+            name = "caseNo"
+            [[Provider.Fahai.Response.Schema.cpws]]
+            doc = "法院"
+            name = "court"
+            [[Provider.Fahai.Response.Schema.cpws]]
+            doc = "审判员"
+            name = "judge"
+            [[Provider.Fahai.Response.Schema.cpws]]
+            doc = "判决日期"
+            name = "judgeResult"
+            [[Provider.Fahai.Response.Schema.cpws]]
+            doc = "审结日期"
+            name = "sortTime"
+            [[Provider.Fahai.Response.Schema.cpws]]
+            doc = "标题"
+            name = "title"
+            [[Provider.Fahai.Response.Schema.cpws]]
+            doc = "依据"
+            name = "yiju"
+            [[Provider.Fahai.Response.Schema.cpws]]
+            doc = "当事人"
+            name = "partys"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "当事人出生日期"
+                name = "birthday"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "受理费"
+                name = "caf"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "案由"
+                name = "caseCauseT"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "代字"
+                name = "caseNoKwordT"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "文书类型"
+                name = "caseTypeT"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "法院等级"
+                name = "courtRankT"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "法院类型"
+                name = "courtTypeT"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "律师事务所"
+                name = "lawOffice"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "委托律师(辨护人)"
+                name = "lawyer"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "判决金额"
+                name = "partyFeeT"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "诉讼地位(原审)"
+                name = "partyPositionT"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "胜负关系"
+                name = "partyResultT"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "当前称号"
+                name = "partyTitleT"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "主体类型"
+                name = "partyType"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "当事人名称"
+                name = "pname"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "驳回标签"
+                name = "boHui"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "查冻扣标签"
+                name = "cdk"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "拆除标签"
+                name = "chaiChu"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "撤诉标签"
+                name = "cheSu"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "吊销标签"
+                name = "diaoXiao"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "罚款标签"
+                name = "faKuan"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "过户标签"
+                name = "guoHu"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "解除查冻扣标签"
+                name = "jieChuCDK"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "警告标签"
+                name = "jingGao"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "拘留标签"
+                name = "juLiu"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "没收标签"
+                name = "moShou"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "票据无效标签"
+                name = "piaoJuWX"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "破产重整标签"
+                name = "poChanCZ"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "破产和解标签"
+                name = "pochanHJ"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "破产清算标签"
+                name = "poChanQS"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "强制执行标签"
+                name = "qangZhi"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "强制注销标签"
+                name = "qangZhiZX"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "迁出标签"
+                name = "qianChu"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "确认违法标签"
+                name = "queRenWF"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "确认无效标签"
+                name = "queRenWX"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "失信标签"
+                name = "shiXin"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "停产停业标签"
+                name = "tingChanTY"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "终结本次执行程序标签"
+                name = "zhongBen"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "中止执行标签"
+                name = "zhongZhi"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "终结执行标签"
+                name = "zjzx"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "信号描述"
+                name = "signalDesc"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "信号等级"
+                name = "signalRating"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "规则编码"
+                name = "signalRuleNo"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "规则版本"
+                name = "signalRuleVersion"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "大类"
+                name = "ruleMainType"
+                [[Provider.Fahai.Response.Schema.cpws.partys]]
+                doc = "小类"
+                name = "ruleSubType"
+            [[Provider.Fahai.Response.Schema.cpws]]
+            doc = "数据类型"
+            name = "datatype"
+        [[Provider.Fahai.Response.Schema]]
+        doc = "开庭公告"
+        name = "ktgg"
+            [[Provider.Fahai.Response.Schema.ktgg]]
+            doc = "开庭公告ID"
+            name = "ktggId"
+            [[Provider.Fahai.Response.Schema.ktgg]]
+            doc = "内容"
+            name = "body"
+            [[Provider.Fahai.Response.Schema.ktgg]]
+            doc = "案号"
+            name = "caseNo"
+            [[Provider.Fahai.Response.Schema.ktgg]]
+            doc = "法院"
+            name = "court"
+            [[Provider.Fahai.Response.Schema.ktgg]]
+            doc = "法庭"
+            name = "courtroom"
+            [[Provider.Fahai.Response.Schema.ktgg]]
+            doc = "法官"
+            name = "judge"
+            [[Provider.Fahai.Response.Schema.ktgg]]
+            doc = "组织者"
+            name = "organizer"
+            [[Provider.Fahai.Response.Schema.ktgg]]
+            doc = "开庭时间"
+            name = "sortTime"
+            [[Provider.Fahai.Response.Schema.ktgg]]
+            doc = "标题"
+            name = "title"
+            [[Provider.Fahai.Response.Schema.ktgg]]
+            doc = "当事人"
+            name = "partys"
+                [[Provider.Fahai.Response.Schema.ktgg.partys]]
+                doc = "案由"
+                name = "caseCauseT"
+                [[Provider.Fahai.Response.Schema.ktgg.partys]]
+                doc = "代字"
+                name = "caseNoKwordT"
+                [[Provider.Fahai.Response.Schema.ktgg.partys]]
+                doc = "法院等级"
+                name = "courtRankT"
+                [[Provider.Fahai.Response.Schema.ktgg.partys]]
+                doc = "法院类型"
+                name = "courtTypeT"
+                [[Provider.Fahai.Response.Schema.ktgg.partys]]
+                doc = "诉讼地位(原审)"
+                name = "partyPositionT"
+                [[Provider.Fahai.Response.Schema.ktgg.partys]]
+                doc = "当前称号"
+                name = "partyTitleT"
+                [[Provider.Fahai.Response.Schema.ktgg.partys]]
+                doc = "主体类型"
+                name = "partyType"
+                [[Provider.Fahai.Response.Schema.ktgg.partys]]
+                doc = "当事人名称"
+                name = "pname"
+                [[Provider.Fahai.Response.Schema.ktgg.partys]]
+                doc = "信号描述"
+                name = "signalDesc"
+                [[Provider.Fahai.Response.Schema.ktgg.partys]]
+                doc = "信号等级"
+                name = "signalRating"
+                [[Provider.Fahai.Response.Schema.ktgg.partys]]
+                doc = "规则编码"
+                name = "signalRuleNo"
+                [[Provider.Fahai.Response.Schema.ktgg.partys]]
+                doc = "规则版本"
+                name = "signalRuleVersion"
+                [[Provider.Fahai.Response.Schema.ktgg.partys]]
+                doc = "大类"
+                name = "ruleMainType"
+                [[Provider.Fahai.Response.Schema.ktgg.partys]]
+                doc = "小类"
+                name = "ruleSubType"
+            [[Provider.Fahai.Response.Schema.ktgg]]
+            doc = "数据类型"
+            name = "datatype"
+        [[Provider.Fahai.Response.Schema]]
+        doc = "执行公告"
+        name = "zxgg"
+            [[Provider.Fahai.Response.Schema.zxgg]]
+            doc = "执行公告ID"
+            name = "zxggId"
+            [[Provider.Fahai.Response.Schema.zxgg]]
+            doc = "地址"
+            name = "address"
+            [[Provider.Fahai.Response.Schema.zxgg]]
+            doc = "内容"
+            name = "body"
+            [[Provider.Fahai.Response.Schema.zxgg]]
+            doc = "案号"
+            name = "caseNo"
+            [[Provider.Fahai.Response.Schema.zxgg]]
+            doc = "终本日期"
+            name = "closeDate"
+            [[Provider.Fahai.Response.Schema.zxgg]]
+            doc = "法院名称"
+            name = "court"
+            [[Provider.Fahai.Response.Schema.zxgg]]
+            doc = "申请人"
+            name = "proposer"
+            [[Provider.Fahai.Response.Schema.zxgg]]
+            doc = "立案日期"
+            name = "sortTime"
+            [[Provider.Fahai.Response.Schema.zxgg]]
+            doc = "标题"
+            name = "title"
+            [[Provider.Fahai.Response.Schema.zxgg]]
+            doc = "依据文书"
+            name = "yjCode"
+            [[Provider.Fahai.Response.Schema.zxgg]]
+            doc = "yjdw"
+            name = "依据单位"
+            [[Provider.Fahai.Response.Schema.zxgg]]
+            doc = "当事人"
+            name = "partys"
+                [[Provider.Fahai.Response.Schema.zxgg.partys]]
+                doc = "案件状态"
+                name = "caseStateT"
+                [[Provider.Fahai.Response.Schema.zxgg.partys]]
+                doc = "代字"
+                name = "caseNoKwordT"
+                [[Provider.Fahai.Response.Schema.zxgg.partys]]
+                doc = "执行金额"
+                name = "execMoney"
+                [[Provider.Fahai.Response.Schema.zxgg.partys]]
+                doc = "身份证号码"
+                name = "idcardNo"
+                [[Provider.Fahai.Response.Schema.zxgg.partys]]
+                doc = "主体类型"
+                name = "partyType"
+                [[Provider.Fahai.Response.Schema.zxgg.partys]]
+                doc = "当事人名称"
+                name = "pname"
+                [[Provider.Fahai.Response.Schema.zxgg.partys]]
+                doc = "信号描述"
+                name = "signalDesc"
+                [[Provider.Fahai.Response.Schema.zxgg.partys]]
+                doc = "信号等级"
+                name = "signalRating"
+                [[Provider.Fahai.Response.Schema.zxgg.partys]]
+                doc = "规则编码"
+                name = "signalRuleNo"
+                [[Provider.Fahai.Response.Schema.zxgg.partys]]
+                doc = "规则版本"
+                name = "signalRuleVersion"
+                [[Provider.Fahai.Response.Schema.zxgg.partys]]
+                doc = "大类"
+                name = "ruleMainType"
+                [[Provider.Fahai.Response.Schema.zxgg.partys]]
+                doc = "小类"
+                name = "ruleSubType"
+            [[Provider.Fahai.Response.Schema.zxgg]]
+            doc = "数据类型"
+            name = "datatype"
+        [[Provider.Fahai.Response.Schema]]
+        doc = "失信公告"
+        name = "shixin"
+            [[Provider.Fahai.Response.Schema.shixin]]
+            doc = "失信公告ID"
+            name = "shixinId"
+            [[Provider.Fahai.Response.Schema.shixin]]
+            doc = "内容"
+            name = "body"
+            [[Provider.Fahai.Response.Schema.shixin]]
+            doc = "案号"
+            name = "caseNo"
+            [[Provider.Fahai.Response.Schema.shixin]]
+            doc = "法院名称"
+            name = "court"
+            [[Provider.Fahai.Response.Schema.shixin]]
+            doc = "发布时间"
+            name = "postTime"
+            [[Provider.Fahai.Response.Schema.shixin]]
+            doc = "立案时间"
+            name = "sortTime"
+            [[Provider.Fahai.Response.Schema.shixin]]
+            doc = "义务"
+            name = "yiwu"
+            [[Provider.Fahai.Response.Schema.shixin]]
+            doc = "依据文号"
+            name = "yjCode"
+            [[Provider.Fahai.Response.Schema.shixin]]
+            doc = "依据单位"
+            name = "yjdw"
+            [[Provider.Fahai.Response.Schema.shixin]]
+            doc = "当事人"
+            name = "partys"
+                [[Provider.Fahai.Response.Schema.shixin.partys]]
+                doc = "年龄"
+                name = "age"
+                [[Provider.Fahai.Response.Schema.shixin.partys]]
+                doc = "代字"
+                name = "caseNoKwordT"
+                [[Provider.Fahai.Response.Schema.shixin.partys]]
+                doc = "身体证号码"
+                name = "idcardNo"
+                [[Provider.Fahai.Response.Schema.shixin.partys]]
+                doc = "具体情形"
+                name = "jtqx"
+                [[Provider.Fahai.Response.Schema.shixin.partys]]
+                doc = "履行情况"
+                name = "lxqkT"
+                [[Provider.Fahai.Response.Schema.shixin.partys]]
+                doc = "涉案金额"
+                name = "money"
+                [[Provider.Fahai.Response.Schema.shixin.partys]]
+                doc = "主体类型"
+                name = "partyType"
+                [[Provider.Fahai.Response.Schema.shixin.partys]]
+                doc = "当事人名称"
+                name = "pname"
+                [[Provider.Fahai.Response.Schema.shixin.partys]]
+                doc = "省份"
+                name = "province"
+                [[Provider.Fahai.Response.Schema.shixin.partys]]
+                doc = "信号描述"
+                name = "signalDesc"
+                [[Provider.Fahai.Response.Schema.shixin.partys]]
+                doc = "信号等级"
+                name = "signalRating"
+                [[Provider.Fahai.Response.Schema.shixin.partys]]
+                doc = "规则编码"
+                name = "signalRuleNo"
+                [[Provider.Fahai.Response.Schema.shixin.partys]]
+                doc = "规则版本"
+                name = "signalRuleVersion"
+                [[Provider.Fahai.Response.Schema.shixin.partys]]
+                doc = "大类"
+                name = "ruleMainType"
+                [[Provider.Fahai.Response.Schema.shixin.partys]]
+                doc = "小类"
+                name = "ruleSubType"
+            [[Provider.Fahai.Response.Schema.shixin]]
+            doc = "数据类型"
+            name = "datatype"
+        [[Provider.Fahai.Response.Schema]]
+        doc = "法院公告"
+        name = "fygg"
+            [[Provider.Fahai.Response.Schema.fygg]]
+            doc = "法院公告ID"
+            name = "fyggId"
+            [[Provider.Fahai.Response.Schema.fygg]]
+            doc = "内容"
+            name = "body"
+            [[Provider.Fahai.Response.Schema.fygg]]
+            doc = "案号"
+            name = "caseNo"
+            [[Provider.Fahai.Response.Schema.fygg]]
+            doc = "法院名称"
+            name = "court"
+            [[Provider.Fahai.Response.Schema.fygg]]
+            doc = "版面"
+            name = "layout"
+            [[Provider.Fahai.Response.Schema.fygg]]
+            doc = "立案时间"
+            name = "sortTime"
+            [[Provider.Fahai.Response.Schema.fygg]]
+            doc = "标题"
+            name = "title"
+            [[Provider.Fahai.Response.Schema.fygg]]
+            doc = "当事人"
+            name = "partys"
+                [[Provider.Fahai.Response.Schema.fygg.partys]]
+                doc = "案由"
+                name = "caseCauseT"
+                [[Provider.Fahai.Response.Schema.fygg.partys]]
+                doc = "代字"
+                name = "caseNoKwordT"
+                [[Provider.Fahai.Response.Schema.fygg.partys]]
+                doc = "法院等级"
+                name = "courtRankT"
+                [[Provider.Fahai.Response.Schema.fygg.partys]]
+                doc = "法院类型"
+                name = "courtTypeT"
+                [[Provider.Fahai.Response.Schema.fygg.partys]]
+                doc = "公告类型"
+                name = "ggTypeT"
+                [[Provider.Fahai.Response.Schema.fygg.partys]]
+                doc = "诉讼地位(原审)"
+                name = "partyPositionT"
+                [[Provider.Fahai.Response.Schema.fygg.partys]]
+                doc = "当前称号"
+                name = "partyTitleT"
+                [[Provider.Fahai.Response.Schema.fygg.partys]]
+                doc = "主体类型"
+                name = "partyType"
+                [[Provider.Fahai.Response.Schema.fygg.partys]]
+                doc = "当事人名称"
+                name = "pname"
+                [[Provider.Fahai.Response.Schema.fygg.partys]]
+                doc = "信号描述"
+                name = "signalDesc"
+                [[Provider.Fahai.Response.Schema.fygg.partys]]
+                doc = "信号等级"
+                name = "signalRating"
+                [[Provider.Fahai.Response.Schema.fygg.partys]]
+                doc = "规则编码"
+                name = "signalRuleNo"
+                [[Provider.Fahai.Response.Schema.fygg.partys]]
+                doc = "规则版本"
+                name = "signalRuleVersion"
+                [[Provider.Fahai.Response.Schema.fygg.partys]]
+                doc = "大类"
+                name = "ruleMainType"
+                [[Provider.Fahai.Response.Schema.fygg.partys]]
+                doc = "小类"
+                name = "ruleSubType"
+            [[Provider.Fahai.Response.Schema.fygg]]
+            doc = "数据类型"
+            name = "datatype"
+        [[Provider.Fahai.Response.Schema]]
+        doc = "案件流程"
+        name = "ajlc"
+            [[Provider.Fahai.Response.Schema.ajlc]]
+            doc = "案件流程ID"
+            name = "ajlcId"
+            [[Provider.Fahai.Response.Schema.ajlc]]
+            doc = "诉讼标的"
+            name = "actionObject"
+            [[Provider.Fahai.Response.Schema.ajlc]]
+            doc = "内容"
+            name = "body"
+            [[Provider.Fahai.Response.Schema.ajlc]]
+            doc = "案号"
+            name = "caseNo"
+            [[Provider.Fahai.Response.Schema.ajlc]]
+            doc = "法院"
+            name = "courtS"
+            [[Provider.Fahai.Response.Schema.ajlc]]
+            doc = "组织者"
+            name = "organizer"
+            [[Provider.Fahai.Response.Schema.ajlc]]
+            doc = "案件时间"
+            name = "sortTime"
+            [[Provider.Fahai.Response.Schema.ajlc]]
+            doc = "标题"
+            name = "title"
+            [[Provider.Fahai.Response.Schema.ajlc]]
+            doc = "当事人"
+            name = "partys"
+                [[Provider.Fahai.Response.Schema.ajlc.party]]
+                doc = "案件状态"
+                name = "ajlcStatusT"
+                [[Provider.Fahai.Response.Schema.ajlc.party]]
+                doc = "案由"
+                name = "caseCauseT"
+                [[Provider.Fahai.Response.Schema.ajlc.party]]
+                doc = "代字"
+                name = "caseNoKwordT"
+                [[Provider.Fahai.Response.Schema.ajlc.party]]
+                doc = "法院等级"
+                name = "courtRankT"
+                [[Provider.Fahai.Response.Schema.ajlc.party]]
+                doc = "法院类型"
+                name = "courtTypeT"
+                [[Provider.Fahai.Response.Schema.ajlc.party]]
+                doc = "诉讼地位(原审)"
+                name = "partyPositionT"
+                [[Provider.Fahai.Response.Schema.ajlc.party]]
+                doc = "当前称号"
+                name = "partyTitleT"
+                [[Provider.Fahai.Response.Schema.ajlc.party]]
+                doc = "主体类型"
+                name = "partyType"
+                [[Provider.Fahai.Response.Schema.ajlc.party]]
+                doc = "当事人名称"
+                name = "pname"
+                [[Provider.Fahai.Response.Schema.ajlc.party]]
+                doc = "审理状态"
+                name = "trialProcedureS"
+                [[Provider.Fahai.Response.Schema.ajlc.party]]
+                doc = "信号描述"
+                name = "signalDesc"
+                [[Provider.Fahai.Response.Schema.ajlc.party]]
+                doc = "信号等级"
+                name = "signalRating"
+                [[Provider.Fahai.Response.Schema.ajlc.party]]
+                doc = "规则编码"
+                name = "signalRuleNo"
+                [[Provider.Fahai.Response.Schema.ajlc.party]]
+                doc = "规则版本"
+                name = "signalRuleVersion"
+                [[Provider.Fahai.Response.Schema.ajlc.party]]
+                doc = "大类"
+                name = "ruleMainType"
+                [[Provider.Fahai.Response.Schema.ajlc.party]]
+                doc = "小类"
+                name = "ruleSubType"
+            [[Provider.Fahai.Response.Schema.ajlc]]
+            doc = "数据类型"
+            name = "datatype"
+        [[Provider.Fahai.Response.Schema]]
+        doc = "曝光台"
+        type = "bgt"
+            [[Provider.Fahai.Response.Schema.bgt]]
+            doc = "曝光台ID"
+            name = "bgtId"
+            [[Provider.Fahai.Response.Schema.bgt]]
+            doc = "内容"
+            name = "body"
+            [[Provider.Fahai.Response.Schema.bgt]]
+            doc = "案号"
+            name = "caseNo"
+            [[Provider.Fahai.Response.Schema.bgt]]
+            doc = "法院名称"
+            name = "court"
+            [[Provider.Fahai.Response.Schema.bgt]]
+            doc = "申请人"
+            name = "proposer"
+            [[Provider.Fahai.Response.Schema.bgt]]
+            doc = "立案时间"
+            name = "sortTime"
+            [[Provider.Fahai.Response.Schema.bgt]]
+            doc = "标题"
+            name = "title"
+            [[Provider.Fahai.Response.Schema.bgt]]
+            doc = "依据"
+            name = "yiju"
+            [[Provider.Fahai.Response.Schema.bgt]]
+            doc = "依据文书"
+            name = "yjCode"
+            [[Provider.Fahai.Response.Schema.bgt]]
+            doc = "当事人"
+            name = "partys"
+                [[Provider.Fahai.Response.Schema.bgt.partys]]
+                doc = "地址"
+                name = "address"
+                [[Provider.Fahai.Response.Schema.bgt.partys]]
+                doc = "案由"
+                name = "caseCauseT"
+                [[Provider.Fahai.Response.Schema.bgt.partys]]
+                doc = "代字"
+                name = "caseNoKwordT"
+                [[Provider.Fahai.Response.Schema.bgt.partys]]
+                doc = "标的金额"
+                name = "execMoney"
+                [[Provider.Fahai.Response.Schema.bgt.partys]]
+                doc = "身体证号码"
+                name = "idcardNo"
+                [[Provider.Fahai.Response.Schema.bgt.partys]]
+                doc = "主体类型"
+                name = "partyType"
+                [[Provider.Fahai.Response.Schema.bgt.partys]]
+                doc = "当事人名称"
+                name = "pname"
+                [[Provider.Fahai.Response.Schema.bgt.partys]]
+                doc = "信号描述"
+                name = "signalDesc"
+                [[Provider.Fahai.Response.Schema.bgt.partys]]
+                doc = "信号等级"
+                name = "signalRating"
+                [[Provider.Fahai.Response.Schema.bgt.partys]]
+                doc = "规则编码"
+                name = "signalRuleNo"
+                [[Provider.Fahai.Response.Schema.bgt.partys]]
+                doc = "规则版本"
+                name = "signalRuleVersion"
+                [[Provider.Fahai.Response.Schema.bgt.partys]]
+                doc = "大类"
+                name = "ruleMainType"
+                [[Provider.Fahai.Response.Schema.bgt.partys]]
+                doc = "小类"
+                name = "ruleSubType"
+            [[Provider.Fahai.Response.Schema.bgt]]
+            doc = "数据类型"
+            name = "datatype"
+        [[Provider.Fahai.Response.Schema]]
+        doc = "司法查冻扣"
+        name = "sifacdk"
+            [[Provider.Fahai.Response.Schema.sifacdk]]
+            doc = "司法查冻扣ID"
+            name = "sifacdkId"
+            [[Provider.Fahai.Response.Schema.sifacdk]]
+            doc = "正文"
+            name = "body"
+            [[Provider.Fahai.Response.Schema.sifacdk]]
+            doc = "审结时间"
+            name = "sortTime"
+            [[Provider.Fahai.Response.Schema.sifacdk]]
+            doc = "事件日期"
+            name = "eventDate"
+            [[Provider.Fahai.Response.Schema.sifacdk]]
+            doc = "标的名称"
+            name = "objectName"
+            [[Provider.Fahai.Response.Schema.sifacdk]]
+            doc = "审理法院"
+            name = "court"
+            [[Provider.Fahai.Response.Schema.sifacdk]]
+            doc = "当事人"
+            name = "pname"
+            [[Provider.Fahai.Response.Schema.sifacdk]]
+            doc = "标题"
+            name = "title"
+            [[Provider.Fahai.Response.Schema.sifacdk]]
+            doc = "资产类别"
+            name = "action"
+            [[Provider.Fahai.Response.Schema.sifacdk]]
+            doc = "案号"
+            name = "caseNo"
+            [[Provider.Fahai.Response.Schema.sifacdk]]
+            doc = "标的类型"
+            name = "objectType"
+            [[Provider.Fahai.Response.Schema.sifacdk]]
+            doc = "发布时间"
+            name = "postTime"
+            [[Provider.Fahai.Response.Schema.sifacdk]]
+            doc = "金额(元)"
+            name = "money"
+            [[Provider.Fahai.Response.Schema.sifacdk]]
+            doc = "数据类型"
+            name = "dataType"
+        [[Provider.Fahai.Response.Schema]]
+        doc = "拍卖公告详情"
+        name = "pmgg"
+            [[Provider.Fahai.Response.Schema.pmgg]]
+            doc = "拍卖公告ID"
+            name = "pmggId"
+            [[Provider.Fahai.Response.Schema.pmgg]]
+            doc = "拍卖公告标题"
+            name = "title"
+            [[Provider.Fahai.Response.Schema.pmgg]]
+            doc = "拍卖标的所有权人"
+            name = "pname"
+            [[Provider.Fahai.Response.Schema.pmgg]]
+            doc = "所有权人证件号码"
+            name = "idCardNo"
+            [[Provider.Fahai.Response.Schema.pmgg]]
+            doc = "标的物详细地址"
+            name = "address"
+            [[Provider.Fahai.Response.Schema.pmgg]]
+            doc = "标的物起拍价"
+            name = "auctionAmount"
+            [[Provider.Fahai.Response.Schema.pmgg]]
+            doc = "标的物性质"
+            name = "acutionType"
+            [[Provider.Fahai.Response.Schema.pmgg]]
+            doc = "标的物名称"
+            name = "lot"
+            [[Provider.Fahai.Response.Schema.pmgg]]
+            doc = "拍卖标的详细描述"
+            name = "lotInfo"
+            [[Provider.Fahai.Response.Schema.pmgg]]
+            doc = "拍卖标的权证号"
+            name = "powerNo"
+            [[Provider.Fahai.Response.Schema.pmgg]]
+            doc = "标的物面积"
+            name = "measure"
+            [[Provider.Fahai.Response.Schema.pmgg]]
+            doc = "发布日期"
+            name = "postTime"
+            [[Provider.Fahai.Response.Schema.pmgg]]
+            doc = "拍卖时间"
+            name = "sortTime"
+            [[Provider.Fahai.Response.Schema.pmgg]]
+            doc = "执行法院"
+            name = "court"
+            [[Provider.Fahai.Response.Schema.pmgg]]
+            doc = "源码／正文"
+            name = "body"
+            [[Provider.Fahai.Response.Schema.pmgg]]
+            doc = "数据类型"
+            name = "dataType"
+        [[Provider.Fahai.Response.Schema]]
+        doc = "欠税公告"
+        name = "satparty_qs"
+            [[Provider.Fahai.Response.Schema.satparty_qs]]
+            doc = "欠税公告ID"
+            name = "satparty_qsId"
+            [[Provider.Fahai.Response.Schema.satparty_qs]]
+            doc = "局（政府单位）"
+            name = "authority"
+            [[Provider.Fahai.Response.Schema.satparty_qs]]
+            doc = "内容"
+            name = "body"
+            [[Provider.Fahai.Response.Schema.satparty_qs]]
+            doc = "事件名称"
+            name = "eventName"
+            [[Provider.Fahai.Response.Schema.satparty_qs]]
+            doc = "企业法定代表人"
+            name = "legalRepresentative"
+            [[Provider.Fahai.Response.Schema.satparty_qs]]
+            doc = "法人身份证号码"
+            name = "lrIdcard"
+            [[Provider.Fahai.Response.Schema.satparty_qs]]
+            doc = "欠税金额"
+            name = "money"
+            [[Provider.Fahai.Response.Schema.satparty_qs]]
+            doc = "企业名称"
+            name = "pname"
+            [[Provider.Fahai.Response.Schema.satparty_qs]]
+            doc = "发布时间"
+            name = "postTime"
+            [[Provider.Fahai.Response.Schema.satparty_qs]]
+            doc = "欠税时间"
+            name = "sortTime"
+            [[Provider.Fahai.Response.Schema.satparty_qs]]
+            doc = "税种"
+            name = "taxCategory"
+            [[Provider.Fahai.Response.Schema.satparty_qs]]
+            doc = "税务登记号"
+            name = "taxpayerId"
+            [[Provider.Fahai.Response.Schema.satparty_qs]]
+            doc = "标题"
+            name = "title"
+            [[Provider.Fahai.Response.Schema.satparty_qs]]
+            doc = "数据类型"
+            name = "dataType"
+            [[Provider.Fahai.Response.Schema.satparty_qs]]
+            doc = "税务局等级"
+            name = "authorityRank"
+            [[Provider.Fahai.Response.Schema.satparty_qs]]
+            doc = "大类"
+            name = "ruleMainType"
+            [[Provider.Fahai.Response.Schema.satparty_qs]]
+            doc = "小类"
+            name = "ruleSubType"
+            [[Provider.Fahai.Response.Schema.satparty_qs]]
+            doc = "信号描述"
+            name = "signalDesc"
+            [[Provider.Fahai.Response.Schema.satparty_qs]]
+            doc = "信号等级"
+            name = "signalRating"
+            [[Provider.Fahai.Response.Schema.satparty_qs]]
+            doc = "规则编码"
+            name = "signalRuleNo"
+            [[Provider.Fahai.Response.Schema.satparty_qs]]
+            doc = "规则版本"
+            name = "signalRuleVersion"
+        [[Provider.Fahai.Response.Schema]]
+        doc = "涉税处罚公示"
+        name = "satparty_chufa"
+            [[Provider.Fahai.Response.Schema.satparty_chufa]]
+            doc = "涉税处罚公示ID"
+            name = "satparty_chufaId"
+            [[Provider.Fahai.Response.Schema.satparty_chufa]]
+            doc = "局（政府单位）"
+            name = "authority"
+            [[Provider.Fahai.Response.Schema.satparty_chufa]]
+            doc = "内容"
+            name = "body"
+            [[Provider.Fahai.Response.Schema.satparty_chufa]]
+            doc = "事件结果"
+            name = "eventResult"
+            [[Provider.Fahai.Response.Schema.satparty_chufa]]
+            doc = "企业法定代表人"
+            name = "legalRepresentative"
+            [[Provider.Fahai.Response.Schema.satparty_chufa]]
+            doc = "法人身份证号码"
+            name = "lrIdcard"
+            [[Provider.Fahai.Response.Schema.satparty_chufa]]
+            doc = "处罚金额"
+            name = "money"
+            [[Provider.Fahai.Response.Schema.satparty_chufa]]
+            doc = "企业名称"
+            name = "pname"
+            [[Provider.Fahai.Response.Schema.satparty_chufa]]
+            doc = "发布时间"
+            name = "postTime"
+            [[Provider.Fahai.Response.Schema.satparty_chufa]]
+            doc = "处罚时间"
+            name = "sortTime"
+            [[Provider.Fahai.Response.Schema.satparty_chufa]]
+            doc = "税务登记号"
+            name = "taxpayerId"
+            [[Provider.Fahai.Response.Schema.satparty_chufa]]
+            doc = "标题"
+            name = "title"
+            [[Provider.Fahai.Response.Schema.satparty_chufa]]
+            doc = "数据类型"
+            name = "dataType"
+            [[Provider.Fahai.Response.Schema.satparty_chufa]]
+            doc = "事件名称"
+            name = "eventName"
+            [[Provider.Fahai.Response.Schema.satparty_chufa]]
+            doc = "大类"
+            name = "ruleMainType"
+            [[Provider.Fahai.Response.Schema.satparty_chufa]]
+            doc = "小类"
+            name = "ruleSubType"
+            [[Provider.Fahai.Response.Schema.satparty_chufa]]
+            doc = "信号描述"
+            name = "signalDesc"
+            [[Provider.Fahai.Response.Schema.satparty_chufa]]
+            doc = "信号等级"
+            name = "signalRating"
+            [[Provider.Fahai.Response.Schema.satparty_chufa]]
+            doc = "规则编码"
+            name = "signalRuleNo"
+            [[Provider.Fahai.Response.Schema.satparty_chufa]]
+            doc = "规则版本"
+            name = "signalRuleVersion"
+        [[Provider.Fahai.Response.Schema]]
+        doc = "税务非正常户"
+        name = "satparty_fzc"
+            [[Provider.Fahai.Response.Schema.satparty_fzc]]
+            doc = "税务非正常户ID"
+            name = "satparty_fzcId"
+            [[Provider.Fahai.Response.Schema.satparty_fzc]]
+            doc = "局（政府单位）"
+            name = "authority"
+            [[Provider.Fahai.Response.Schema.satparty_fzc]]
+            doc = "内容"
+            name = "body"
+            [[Provider.Fahai.Response.Schema.satparty_fzc]]
+            doc = "事件名称"
+            name = "eventName"
+            [[Provider.Fahai.Response.Schema.satparty_fzc]]
+            doc = "事件结果"
+            name = "eventResult"
+            [[Provider.Fahai.Response.Schema.satparty_fzc]]
+            doc = "企业法定代表人"
+            name = "legalRepresentative"
+            [[Provider.Fahai.Response.Schema.satparty_fzc]]
+            doc = "法人身份证号码"
+            name = "lrIdcard"
+            [[Provider.Fahai.Response.Schema.satparty_fzc]]
+            doc = "企业名称"
+            name = "pname"
+            [[Provider.Fahai.Response.Schema.satparty_fzc]]
+            doc = "发布时间"
+            name = "postTime"
+            [[Provider.Fahai.Response.Schema.satparty_fzc]]
+            doc = "认定时间"
+            name = "sortTime"
+            [[Provider.Fahai.Response.Schema.satparty_fzc]]
+            doc = "税务登记号"
+            name = "taxpayerId"
+            [[Provider.Fahai.Response.Schema.satparty_fzc]]
+            doc = "标题"
+            name = "title"
+            [[Provider.Fahai.Response.Schema.satparty_fzc]]
+            doc = "数据类别"
+            name = "dataType"
+            [[Provider.Fahai.Response.Schema.satparty_fzc]]
+            doc = "大类"
+            name = "ruleMainType"
+            [[Provider.Fahai.Response.Schema.satparty_fzc]]
+            doc = "小类"
+            name = "ruleSubType"
+            [[Provider.Fahai.Response.Schema.satparty_fzc]]
+            doc = "信号描述"
+            name = "signalDesc"
+            [[Provider.Fahai.Response.Schema.satparty_fzc]]
+            doc = "信号等级"
+            name = "signalRating"
+            [[Provider.Fahai.Response.Schema.satparty_fzc]]
+            doc = "规则编码"
+            name = "signalRuleNo"
+            [[Provider.Fahai.Response.Schema.satparty_fzc]]
+            doc = "规则版本"
+            name = "signalRuleVersion"
+        [[Provider.Fahai.Response.Schema]]
+        doc = "纳税信用等级"
+        name = "satparty_xin"
+            [[Provider.Fahai.Response.Schema.satparty_xin]]
+            doc = "纳税信用等级ID"
+            name = "satparty_xinId"
+            [[Provider.Fahai.Response.Schema.satparty_xin]]
+            doc = "局（政府单位）"
+            name = "authority"
+            [[Provider.Fahai.Response.Schema.satparty_xin]]
+            doc = "内容"
+            name = "body"
+            [[Provider.Fahai.Response.Schema.satparty_xin]]
+            doc = "事件结果（级别）"
+            name = "eventResult"
+            [[Provider.Fahai.Response.Schema.satparty_xin]]
+            doc = "企业法定代表人"
+            name = "legalRepresentative"
+            [[Provider.Fahai.Response.Schema.satparty_xin]]
+            doc = "企业名称"
+            name = "pname"
+            [[Provider.Fahai.Response.Schema.satparty_xin]]
+            doc = "发布时间"
+            name = "postTime"
+            [[Provider.Fahai.Response.Schema.satparty_xin]]
+            doc = "评定时间"
+            name = "sortTime"
+            [[Provider.Fahai.Response.Schema.satparty_xin]]
+            doc = "税务登记号"
+            name = "taxpayerId"
+            [[Provider.Fahai.Response.Schema.satparty_xin]]
+            doc = "标题"
+            name = "title"
+            [[Provider.Fahai.Response.Schema.satparty_xin]]
+            doc = "数据类型"
+            name = "dataType"
+            [[Provider.Fahai.Response.Schema.satparty_xin]]
+            doc = "ruleMainType"
+            name = "大类"
+            [[Provider.Fahai.Response.Schema.satparty_xin]]
+            doc = "ruleSubType"
+            name = "小类"
+            [[Provider.Fahai.Response.Schema.satparty_xin]]
+            doc = "信号描述"
+            name = "signalDesc"
+            [[Provider.Fahai.Response.Schema.satparty_xin]]
+            doc = "信号等级"
+            name = "signalRating"
+            [[Provider.Fahai.Response.Schema.satparty_xin]]
+            doc = "规则编码"
+            name = "signalRuleNo"
+            [[Provider.Fahai.Response.Schema.satparty_xin]]
+            doc = "规则版本"
+            name = "signalRuleVersion"
+
+[Provider.Fahai.Input]
+    [Provider.Fahai.Input.QuerySifa.Input]
+        [[Provider.Fahai.QuerySifa.Input.Schema]]
+        doc = "搜索关键字"
+        name = "keyword"
+        type = "string"
+        [[Provider.Fahai.QuerySifa.Input.Schema]]
+        doc = "领域维度"
+        name = "dataType"
+        type = "string?"
+        [[Provider.Fahai.QuerySifa.Input.Schema]]
+        doc = "页码"
+        name = "pageno"
+        type = "int?"
+        [[Provider.Fahai.QuerySifa.Input.Schema]]
+        doc = "显示条数"
+        name = "range"
+        type = "int?"
+    [Provider.Fahai.Input.PersonalSifa]
+        [[Provider.Fahai.PersonalSifa.Input.Schema]]
+        doc = "名称"
+        name = "name"
+        type = "string"
+        [[Provider.Fahai.PersonalSifa.Input.Schema]]
+        doc = "身份证"
+        name = "idcardNo"
+        type = "string"
+        [[Provider.Fahai.PersonalSifa.Input.Schema]]
+        doc = "领域维度"
+        name = "dataType"
+        type = "string?"
+        [[Provider.Fahai.PersonalSifa.Input.Schema]]
+        doc = "页码"
+        name = "pageno"
+        type = "int?"
+        [[Provider.Fahai.PersonalSifa.Input.Schema]]
+        doc = "显示条数"
+        name = "range"
+        type = "int?"
+    [Provider.Fahai.Input.QuerySat]
+        [[Provider.Fahai.Input.QuerySat.Schema]]
+        doc = "搜索关键字"
+        name = "keyword"
+        type = "string"
+        [[Provider.Fahai.Input.QuerySat.Schema]]
+        doc = "领域维度"
+        name = "dataType"
+        type = "string?"
+        [[Provider.Fahai.Input.QuerySat.Schema]]
+        doc = "页码"
+        name = "pageno"
+        type = "int?"
+        [[Provider.Fahai.Input.QuerySat.Schema]]
+        doc = "显示条数"
+        name = "range"
+        type = "int?"
+    [Provider.Fahai.Input.ExportSifa]
+        [[Provider.Fahai.Input.ExportSifa.Schema]]
+        doc = "查询标识"
+        name = "id"
+        type = "string"
+        [[Provider.Fahai.Input.ExportSifa.Schema]]
+        doc = "维度"
+        name = "dimension"
+        type = "string"
+        [[Provider.Fahai.Input.ExportSifa.Schema]]
+        doc = "页码"
+        name = "pageno"
+        type = "int?"
+        [[Provider.Fahai.Input.ExportSifa.Schema]]
+        doc = "显示条数"
+        name = "range"
+        type = "int?"
+    [Provider.Fahai.Input.ExportSat]
+        [[Provider.Fahai.Input.ExportSat.Schema]]
+        doc = "查询标识"
+        name = "id"
+        type = "string"
+        [[Provider.Fahai.Input.ExportSat.Schema]]
+        doc = "维度"
+        name = "dimension"
+        type = "string"
+        [[Provider.Fahai.Input.ExportSat.Schema]]
+        doc = "页码"
+        name = "pageno"
+        type = "int?"
+        [[Provider.Fahai.Input.ExportSat.Schema]]
+        doc = "显示条数"
+        name = "range"
+        type = "int?"
+
+
+
+
+# 19 fahai_query_sifa = ["法海", "涉诉企业查询", "Provider.Fahai.QuerySifa"]                                                                                                   
+# 20 fahai_personal_sifa = ["法海", "涉诉个人查询", "Provider.Fahai.PersonalSifa"]                                                                                             
+# 21 fahai_query_sat = ["法海", "涉税企业查询", "Provider.Fahai.QuerySat"]                                                                                                     
+# 22 fahai_export_sifa = ["法海", "涉诉详情查询", "Provider.Fahai.ExportSifa"]                                                                                                 
+# 23 fahai_export_sat = ["法海", "涉税详情查询", "Provider.Fahai.ExportSat"]                                                                                                   
